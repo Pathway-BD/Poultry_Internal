@@ -1,2 +1,2 @@
-# Poultry_External
-Poultry_External tool for Customer and Partner
+# Poultry_Internal
+Poultry_Internal tool for Pathway
