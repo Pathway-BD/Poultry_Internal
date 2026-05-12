@@ -227,81 +227,6 @@
                 grid-template-columns: 1fr !important;
             }
 
-            /* ── Fix 1: Scenario auto-row 좌우 정렬 (1번 사진) ── */
-            #tab6 .auto-row {
-                align-items: flex-start;
-                gap: 6px;
-            }
-            #tab6 .auto-lbl {
-                flex: 1;
-                font-size: 10.5px !important;
-                line-height: 1.35;
-                color: var(--muted);
-            }
-            #tab6 .auto-val {
-                flex-shrink: 0;
-                text-align: right;
-                font-size: 11px !important;
-                max-width: 48%;
-                word-break: break-word;
-            }
-            /* Summary rows (+/-) 정렬 */
-            #tab6 [style*="display:flex;align-items:center;gap:8px"] {
-                flex-wrap: nowrap;
-            }
-
-            /* ── Fix 2: Ingredient 블록 점선 구분 + 배경 ── */
-            #tab6 .g4 > div {
-                border: 1px dashed #b8ddc8;
-                border-radius: 10px;
-                padding: 12px 10px;
-                background: #f7fdf9;
-            }
-            #tab6 .blk-title {
-                font-size: 12px !important;
-                letter-spacing: 0.05em;
-                margin-bottom: 10px !important;
-            }
-            #tab6 .inp-wrap input {
-                font-size: 13px !important;
-                padding: 7px 36px 7px 10px !important;
-            }
-            #tab6 .fld label {
-                font-size: 12px !important;
-                margin-bottom: 4px !important;
-            }
-            /* 섹션 헤더 강조 */
-            #tab6 .sec-head {
-                font-size: 12px !important;
-                color: #1a9b5a !important;
-                font-weight: 700 !important;
-                margin-bottom: 14px !important;
-                padding-bottom: 6px;
-                border-bottom: 2px solid #d0f0e0;
-            }
-            #tab6 .sec-head::after { display: none; }
-            /* 시나리오 카드 - 세로 1열 + 강조 */
-            #tab6 .sc-grid {
-                grid-template-columns: 1fr !important;
-                gap: 10px !important;
-            }
-            #tab6 .sc-card {
-                border-radius: 10px !important;
-                padding: 14px 12px !important;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
-            }
-            #tab6 .sc-title {
-                font-size: 11px !important;
-                margin-bottom: 10px !important;
-            }
-            #tab6 .auto-val {
-                font-size: 13px !important;
-                font-weight: 600 !important;
-            }
-            #tab6 .auto-lbl {
-                font-size: 11px !important;
-            }
-
             /* tab5 - 부제목 줄바꿈 */
             .tab5-subtitle { display: block !important; margin-left: 0 !important; margin-top: 2px; }
 
@@ -548,232 +473,6 @@
 .rec-action-btn.danger:hover{border-color:var(--danger);color:var(--danger);}
 .copied-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 24px;border-radius:8px;font-size:.88em;font-weight:700;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;}
 .copied-toast.show{opacity:1;}
-    
-  /* ── Lipidol Report (Tab 6) ── */
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-  
-  
-  
-    /* Header */
-  #tab6 .hdr { background: var(--text); padding: 18px 36px; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; }
-  #tab6 .hdr-logo { width: 34px; height: 34px; background: var(--green-mid); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 500; color: white; }
-  #tab6 .hdr h1 { font-size: 15px; font-weight: 500; color: white; }
-  #tab6 .hdr span { font-size: 12px; color: #777; display: block; margin-top: 1px; }
-  
-  #tab6 .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 60px; }
-  
-    /* Section heading */
-  #tab6 .sec-head { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
-  #tab6 .sec-head::after { content:''; flex:1; height:1px; background:var(--border); }
-  
-    /* Card */
-  #tab6 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px; box-shadow: var(--shadow); }
-  #tab6 .card + .card { margin-top: 16px; }
-  
-    /* Grid */
-  #tab6 .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  #tab6 .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-  #tab6 .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  
-    /* Field */
-  #tab6 .fld { margin-bottom: 10px; }
-  #tab6 .fld:last-child { margin-bottom: 0; }
-  #tab6 .fld label { display: block; font-size: 11px; font-weight: 500; color: var(--muted); margin-bottom: 3px; }
-  #tab6 .inp-wrap { position: relative; }
-  #tab6 .inp-wrap input { width: 100%; padding: 7px 38px 7px 10px; border: 1px solid var(--border); border-radius: 7px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text); background: var(--bg); transition: border-color 0.15s, box-shadow 0.15s; -moz-appearance: textfield; }
-  #tab6 .inp-wrap input::-webkit-outer-spin-button,
-  #tab6 .inp-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; }
-  #tab6 .inp-wrap input:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(39,158,106,0.1); background: white; }
-  #tab6 .inp-wrap .u { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--muted); pointer-events: none; font-family: 'JetBrains Mono', monospace; }
-  #tab6 .fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  #tab6 .fld-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-  
-    /* Ingredient block title */
-  #tab6 .blk-title { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-  
-    /* Scenario cards */
-  #tab6 .sc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 4px; }
-  #tab6 .sc-card { border-radius: var(--r); padding: 16px; border: 1px solid var(--border); background: var(--bg); }
-  #tab6 .sc-title { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-  #tab6 .sc-title.a { color: var(--green); }
-  #tab6 .sc-title.b { color: var(--amber); }
-  #tab6 .sc-title.c { color: var(--red); }
-  
-  #tab6 .auto-block { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
-  #tab6 .auto-row { display: flex; justify-content: space-between; align-items: baseline; }
-  #tab6 .auto-lbl { font-size: 11px; color: var(--muted); }
-  #tab6 .auto-val { font-size: 12px; font-weight: 500; font-family: 'JetBrains Mono', monospace; color: var(--text); }
-  
-    /* Generate button */
-  #tab6 .btn-gen { width: 100%; padding: 14px; background: var(--text); color: white; border: none; border-radius: var(--r); font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 20px; letter-spacing: 0.01em; transition: opacity 0.15s, transform 0.1s; }
-  #tab6 .btn-gen:hover { opacity: 0.88; }
-  #tab6 .btn-gen:active { transform: scale(0.995); }
-  
-    /* ── REPORT ── */
-  #tab6 #report { display: none; margin-top: 40px; }
-  
-  #tab6 .rpt-hdr { background: var(--text); border-radius: var(--r); padding: 24px 28px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-  #tab6 .rpt-hdr h2 { font-size: 19px; font-weight: 500; color: white; letter-spacing: -0.02em; margin-bottom: 3px; }
-  #tab6 .rpt-hdr p { font-size: 11px; color: #777; }
-  #tab6 .btn-print { padding: 9px 18px; background: var(--green); color: white; border: none; border-radius: 7px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; }
-  #tab6 .btn-print:hover { background: var(--green-mid); }
-  
-    /* Tables */
-  #tab6 table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  #tab6 th { background: var(--text); color: white; padding: 9px 13px; text-align: left; font-weight: 500; font-size: 11px; }
-  #tab6 th:first-child { border-radius: 8px 0 0 0; }
-  #tab6 th:last-child { border-radius: 0 8px 0 0; }
-  #tab6 td { padding: 9px 13px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
-  #tab6 tr:last-child td { border-bottom: none; }
-  #tab6 tr:nth-child(even) td { background: var(--bg); }
-  #tab6 .td-lbl { font-weight: 500; color: var(--muted); font-size: 11.5px; }
-  
-  #tab6 .badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
-  #tab6 .b-green { background: var(--green-light); color: var(--green); }
-  #tab6 .b-amber { background: var(--amber-light); color: var(--amber); }
-  
-    /* Note boxes */
-  #tab6 .note { border-radius: 8px; padding: 11px 14px; font-size: 12px; margin-top: 12px; line-height: 1.65; }
-  #tab6 .note.green { background: var(--green-light); color: var(--green); border-left: 3px solid var(--green-mid); }
-  #tab6 .note.amber { background: var(--amber-light); color: var(--amber); border-left: 3px solid var(--amber); }
-  #tab6 .note.neutral { background: var(--bg); color: var(--muted); border: 1px solid var(--border); border-left: 3px solid #CCC; }
-  #tab6 .note.red { background: #FFF7F0; color: #7A4010; border: 1px solid #F0D0B0; border-left: 3px solid var(--amber); font-style: italic; }
-  
-    /* Cost boxes */
-  #tab6 .cost-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 14px; }
-  #tab6 .cbox { border-radius: var(--r); padding: 16px 14px; text-align: center; }
-  #tab6 .cbox.a { background: var(--green-light); }
-  #tab6 .cbox.b { background: var(--amber-light); }
-  #tab6 .cbox.c { background: var(--red-light); }
-  #tab6 .cbox .clbl { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 5px; }
-  #tab6 .cbox.a .clbl { color: var(--green); }
-  #tab6 .cbox.b .clbl { color: var(--amber); }
-  #tab6 .cbox.c .clbl { color: var(--red); }
-  #tab6 .cbox .cval { font-size: 20px; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
-  #tab6 .cbox.a .cval { color: var(--green); }
-  #tab6 .cbox.b .cval { color: var(--amber); }
-  #tab6 .cbox.c .cval { color: var(--red); }
-  #tab6 .cbox .csub { font-size: 11px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
-  
-  #tab6 .eff-bar { background: var(--text); color: white; border-radius: var(--r); padding: 14px 18px; margin-top: 14px; display: flex; align-items: center; gap: 14px; }
-  #tab6 .eff-bar .et { font-size: 10px; color: #888; white-space: nowrap; }
-  #tab6 .eff-bar .ee { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; }
-  
-    /* Rec */
-  #tab6 .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
-  #tab6 .rec-box { border-radius: var(--r); padding: 16px; border: 1px solid var(--border); }
-  #tab6 .rec-box h4 { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 7px; }
-  #tab6 .rec-box p { font-size: 12px; color: var(--muted); line-height: 1.65; }
-  #tab6 .rec-box .reff { font-size: 12px; font-weight: 600; margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
-  
-    /* Disclaimer */
-  #tab6 .disclaimer { margin-top: 20px; border-radius: var(--r); padding: 14px 18px; background: #F5F3EE; border: 1px solid var(--border); font-size: 11.5px; color: var(--muted); line-height: 1.7; }
-  #tab6 .disclaimer strong { color: var(--text); }
-  
-    @media print {
-    #tab6 body { background: white; }
-    #tab6 .hdr,
-    #tab6 .wrap > .sec-head,
-    #tab6 .card:not(#report .card),
-    #tab6 .btn-gen,
-    #tab6 .btn-print { display: none !important; }
-    #tab6 #report { display: block !important; margin: 0; }
-    #tab6 .rpt-hdr { border-radius: 0; }
-    }
-  
-    /* ── RESPONSIVE — Tablet ── */
-    @media (max-width: 900px) {
-    #tab6 .g4 { grid-template-columns: 1fr 1fr; }
-    #tab6 .hdr { padding: 14px 20px; }
-    #tab6 .wrap { padding: 20px 16px 48px; }
-    }
-  
-    /* ── RESPONSIVE — Mobile (iPhone 16: 393px) ── */
-    @media (max-width: 640px) {
-    #tab6 body { font-size: 13px; }
-  
-      /* Header */
-    #tab6 .hdr { padding: 12px 14px; gap: 10px; flex-wrap: wrap; }
-    #tab6 .hdr h1 { font-size: 13px; }
-    #tab6 .hdr span { font-size: 11px; }
-    #tab6 .hdr-logo { width: 30px; height: 30px; font-size: 13px; }
-  
-      /* Layout */
-    #tab6 .wrap { padding: 12px 10px 36px; }
-    #tab6 .card { padding: 14px 12px; }
-  
-      /* Collapse multi-column grids to single column */
-      .g2, .g3,
-      .fld-row, .fld-row3,
-    #tab6 .sc-grid,
-    #tab6 .cost-row,
-    #tab6 .rec-grid { grid-template-columns: 1fr !important; }
-  
-      /* Ingredient: keep 2-col, top-align so unequal heights don't create gaps */
-    #tab6 .g4 { grid-template-columns: 1fr 1fr !important; align-items: start; }
-  
-      /* Reorder blocks so similar-height blocks share a row:
-         Row 1: Full Fat Soya (4 fields) | Lipidol+General (3 fields)
-         Row 2: Soybean Oil (2 fields)   | Soybean Meal (1 field)       */
-    #tab6 .g4 > div:nth-child(1) { order: 1; }
-    #tab6 .g4 > div:nth-child(2) { order: 3; }
-    #tab6 .g4 > div:nth-child(3) { order: 4; }
-    #tab6 .g4 > div:nth-child(4) { order: 2; }
-      /* Scenario cards: side-by-side labels stay legible */
-    #tab6 .sc-card { padding: 12px 10px; }
-    #tab6 .sc-title { font-size: 11px; margin-bottom: 10px; }
-  
-      /* Inputs: larger touch target */
-    #tab6 .inp-wrap input {
-        padding: 11px 40px 11px 11px;
-        font-size: 15px;
-        border-radius: 8px;
-      }
-    #tab6 .inp-wrap .u { font-size: 11px; right: 10px; }
-    #tab6 .fld label { font-size: 12px; margin-bottom: 4px; }
-    #tab6 .fld { margin-bottom: 12px; }
-  
-      /* Block title */
-    #tab6 .blk-title { font-size: 12px; }
-  
-      /* Report header: stack vertically */
-    #tab6 .rpt-hdr { padding: 16px 14px; flex-direction: column; align-items: flex-start; gap: 10px; }
-    #tab6 .rpt-hdr h2 { font-size: 16px; }
-    #tab6 .btn-print { width: 100%; text-align: center; padding: 10px; }
-  
-      /* Tables: horizontal scroll */
-    #tab6 #tbl-baseline,
-    #tab6 #tbl-scenario {
-        display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        white-space: nowrap;
-      }
-    #tab6 table { font-size: 11.5px; }
-    #tab6 th,
-    #tab6 td { padding: 8px 10px; }
-  
-      /* Cost boxes */
-    #tab6 .cbox .cval { font-size: 18px; }
-  
-      /* Efficiency bar */
-    #tab6 .eff-bar { flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 14px; }
-  
-      /* Generate button */
-    #tab6 .btn-gen { font-size: 15px; padding: 16px; margin-top: 16px; }
-  
-      /* Right-aligned version info in header */
-    #tab6 .hdr > div:last-child { margin-left: auto; }
-  
-      /* auto-row: prevent text from being squeezed */
-    #tab6 .auto-lbl { font-size: 11.5px; }
-    #tab6 .auto-val { font-size: 12.5px; }
-  
-      /* Summary note boxes */
-    #tab6 .note { font-size: 12.5px; }
-    #tab6 .disclaimer { font-size: 11.5px; padding: 12px 12px; }
-    }
-
 /* Layer sheet styles */
 /* Hisex Layer Sheet — 3-column: Setting + My data + Scenario in ONE row */
         /* 3-column row: Setting | My data | Scenario — fixed width, centered */
@@ -961,7 +660,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div style="display:flex; align-items:flex-start; justify-content:flex-end; flex:0 0 auto;">
             <img src="logo-header.png" alt="Pathway Intermediates" style="height:66px; width:auto; max-width:260px; object-fit:contain; image-rendering:auto;">
         </div>
-        <span style="position:absolute; left:8px; bottom:5px; font-size:0.7em; color:#9aa8bf; font-family:monospace; letter-spacing:0.5px;">v. 260512b</span>
+        <span style="position:absolute; left:8px; bottom:5px; font-size:0.7em; color:#9aa8bf; font-family:monospace; letter-spacing:0.5px;">v. 260512c</span>
     </div>
     <div class="tab-bar">
         <div class="tab-btn active" onclick="moveTab(0)"><span class="tab-label-full">Broiler Performance</span><span class="tab-label-short">Broiler</span></div>
@@ -1125,14 +824,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <div class="field-box">
                         <label>Breed:</label>
                         <select id="layerBreed" onchange="layerUpdateData()">
-                            <option value="hisexBrown" selected>Hisex Brown</option>
-                            <option value="hisexWhite">Hisex White</option>
+                            <option value="hisexBrown" selected>Hisex Brown (Cage)</option>
+                            <option value="hisexWhite">Hisex White (Cage)</option>
                             <option value="hylineBrown2025">Hy-Line Brown 2025</option>
                             <option value="hylineW80">Hy-Line W-80 2026</option>
-                            <option value="isaBrown">ISA Brown</option>
-                            <option value="isaWhite">ISA White</option>
+                            <option value="isaBrown">ISA Brown (Cage, SE Asia)</option>
+                            <option value="isaWhite">ISA White (Cage)</option>
                             <option value="lohmannBrownClassic">Lohmann Brown-Classic</option>
-                            <option value="lohmannLslLite">Lohmann LSL-Lite</option>
+                            <option value="lohmannLslLite">Lohmann LSL-Lite Cage</option>
                         </select>
                     </div>
                     <div class="field-box">
