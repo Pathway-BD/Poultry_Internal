@@ -171,13 +171,9 @@
             .app-title-wrap { max-width: 60% !important; }
             .app-title { font-size: 1.5em !important; line-height: 1.1 !important; }
 
-            /* 탭바: 드롭다운 대신 버튼 2개 */
-            .tab-bar { display: flex !important; gap: 0; margin-bottom: 10px; border-bottom: none; }
-            .tab-select-wrap { display: none !important; }
-            .tab-btn { flex: 1; text-align: center; border-radius: 0; border: 2px solid #1e3a7a; background: #fff; color: #1e3a7a; padding: 11px 8px; font-size: 15px; font-weight: 700; }
-            .tab-btn:first-child { border-radius: 8px 0 0 8px; }
-            .tab-btn:last-child { border-radius: 0 8px 8px 0; border-left: none; }
-            .tab-btn.active { background: #1e3a7a; color: #fff; border-color: #1e3a7a; position: static; top: 0; }
+            /* Mobile sheet picker */
+            .tab-bar { display: none !important; }
+            .tab-select-wrap { display: block !important; margin-bottom: 12px; }
             /* show short label, hide full label */
             .tab-label-short { display: inline; }
             .tab-label-full { display: none; }
@@ -434,8 +430,13 @@
         /* Tabs */
         .tab-bar { display: flex; gap: 5px; margin-bottom: 10px; border-bottom: 2px solid #dee2e6; }
         .tab-select-wrap { display: none; position: relative; }
-        .tab-select-arrow { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; color: #007bff; font-size: 13px; font-weight: bold; z-index: 2; }
-        .tab-select { width: 100%; padding: 11px 40px 11px 14px; font-size: 15px; font-weight: 600; color: #007bff; background: #fff; border: 2px solid #007bff; border-radius: 8px; cursor: pointer; -webkit-appearance: none; appearance: none; }
+        .tab-sheet-toggle { width: 100%; min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; font-size: 16px; font-weight: 700; color: #1e3a7a; background: #fff; border: 2px solid #1e3a7a; border-radius: 8px; cursor: pointer; text-align: left; }
+        .tab-sheet-toggle::after { content: '▼'; font-size: 12px; transition: transform 0.2s ease; }
+        .tab-select-wrap.open .tab-sheet-toggle::after { transform: rotate(180deg); }
+        .tab-sheet-list { display: none; position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 20; margin: 0; padding: 6px; list-style: none; background: #fff; border: 1px solid #cfd8ea; border-radius: 8px; box-shadow: 0 10px 24px rgba(30,58,122,0.18); }
+        .tab-select-wrap.open .tab-sheet-list { display: block; }
+        .tab-sheet-list button { width: 100%; min-height: 44px; padding: 10px 12px; border: none; border-radius: 6px; background: #fff; color: #1f2937; font-size: 15px; font-weight: 600; text-align: left; cursor: pointer; }
+        .tab-sheet-list button.active { background: #eaf1ff; color: #1e3a7a; }
         .tab-btn { padding: 12px 25px; cursor: pointer; border: 1px solid #ccc; border-bottom: none; background: #eee; border-radius: 8px 8px 0 0; font-weight: bold; }
         .tab-btn.active { background: #fff; color: #007bff; border-bottom: 3px solid #fff; position: relative; top: 2px; }
         .tab-content { display: none; }
@@ -991,16 +992,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="tab-btn" onclick="moveTab(6)">Lipidol Report</div>
     </div>
     <div class="tab-select-wrap">
-        <select class="tab-select" onchange="moveTabSelect(this.value)">
-            <option value="0">Broiler Performance</option>
-            <option value="1">Layer Performance</option>
-            <option value="2">Application Simulation</option>
-            <option value="3">ProBe-Bac WE</option>
-            <option value="4">Lipidol Saving</option>
-            <option value="5">Product Selector</option>
-            <option value="6">Lipidol Report</option>
-        </select>
-        <span class="tab-select-arrow">▼</span>
+        <button type="button" class="tab-sheet-toggle" onclick="toggleTabSheet()" aria-expanded="false">
+            Broiler Performance
+        </button>
+        <ul class="tab-sheet-list">
+            <li><button type="button" class="active" onclick="moveTabFromSheet(0)">Broiler Performance</button></li>
+            <li><button type="button" onclick="moveTabFromSheet(1)">Layer Performance</button></li>
+            <li><button type="button" onclick="moveTabFromSheet(2)">Application Simulation</button></li>
+            <li><button type="button" onclick="moveTabFromSheet(3)">ProBe-Bac WE</button></li>
+            <li><button type="button" onclick="moveTabFromSheet(4)">Lipidol Saving</button></li>
+            <li><button type="button" onclick="moveTabFromSheet(5)">Product Selector</button></li>
+            <li><button type="button" onclick="moveTabFromSheet(6)">Lipidol Report</button></li>
+        </ul>
     </div>
 
     <div id="tab0" class="tab-content active pre-analysis">
@@ -2298,11 +2301,45 @@ function getVal(id, def = 0) {
 function moveTab(idx) {
     document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
     document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-    const sel = document.querySelector('.tab-select');
-    if (sel) sel.value = idx;
+    updateTabSheetPicker(idx);
     if(idx === 1) ensureLayerReady();
 }
-function moveTabSelect(val) { moveTab(Number(val)); }
+
+function toggleTabSheet() {
+    const wrap = document.querySelector('.tab-select-wrap');
+    if (!wrap) return;
+    const isOpen = wrap.classList.toggle('open');
+    const toggle = wrap.querySelector('.tab-sheet-toggle');
+    if (toggle) toggle.setAttribute('aria-expanded', String(isOpen));
+}
+
+function closeTabSheet() {
+    const wrap = document.querySelector('.tab-select-wrap');
+    if (!wrap) return;
+    wrap.classList.remove('open');
+    const toggle = wrap.querySelector('.tab-sheet-toggle');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+}
+
+function updateTabSheetPicker(idx) {
+    const wrap = document.querySelector('.tab-select-wrap');
+    if (!wrap) return;
+    const buttons = wrap.querySelectorAll('.tab-sheet-list button');
+    buttons.forEach((btn, i) => btn.classList.toggle('active', i === idx));
+    const activeBtn = buttons[idx];
+    const toggle = wrap.querySelector('.tab-sheet-toggle');
+    if (toggle && activeBtn) toggle.firstChild.nodeValue = activeBtn.textContent.trim();
+}
+
+function moveTabFromSheet(idx) {
+    moveTab(Number(idx));
+    closeTabSheet();
+}
+
+document.addEventListener('click', function(e) {
+    const wrap = document.querySelector('.tab-select-wrap');
+    if (wrap && !wrap.contains(e.target)) closeTabSheet();
+});
 
 function updateCurrency() {
     const curr = document.getElementById('currencyUnit').value || 'USD';
