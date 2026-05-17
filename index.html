@@ -9809,11 +9809,14 @@ function calcPB() {
     body.innerHTML = '';
     
     let totalG = 0;
-    let currentWaterL = tankVol;
+    let currentWaterL = 0;
     const wePerTank = tankVol * (ppm / 1000);
     let refillDays = [];
+    const maxDay = 40;
+    const effectiveDays = Math.min(days, maxDay);
+    const truncated = days > maxDay;
 
-    for (let d = 1; d <= days && d <= 40; d++) {
+    for (let d = 1; d <= effectiveDays; d++) {
         const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
         const waterIntakeHeadMl = feedIntakeHead * wfRatio;
         const dailyHouseWaterL = (waterIntakeHeadMl * birds) / 1000;
@@ -9824,9 +9827,10 @@ function calcPB() {
             refillsToday++;
             currentWaterL += tankVol;
         }
-        
+
         let actionGuide = `<span style="color:#bbb;">-</span>`;
         let trClass = "";
+        let tankRemainCell = `<td style="color:#666;">${currentWaterL.toFixed(1)}</td>`;
 
         if (refillsToday > 0) {
             refillDays.push(d);
@@ -9840,17 +9844,24 @@ function calcPB() {
                 guideText = `${wePerTank.toFixed(1)}g`;
             }
 
-            actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">Add WE: </span>${guideText}</span>`;
+            const actionLabel = (d === 1) ? 'Initial Fill' : 'Add WE';
+            const refillBadge = (refillsToday > 1) ? ` <span style="font-size:0.75em; color:#d32f2f;">×${refillsToday}</span>` : '';
+            actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">${actionLabel}: </span>${guideText}${refillBadge}</span>`;
             trClass = "refill-row";
+            tankRemainCell = `<td style="color:#666;"><span style="color:#d32f2f; font-weight:bold;">0</span> <span style="font-size:0.8em; color:#999;">→ ${currentWaterL.toFixed(1)}</span></td>`;
         }
 
         body.innerHTML += `<tr class="${trClass}">
             <td><strong>Day ${d}</strong></td>
             <td>${feedIntakeHead.toFixed(1)}</td>
             <td>${dailyHouseWaterL.toFixed(1)}</td>
-            <td style="color:#666;">${currentWaterL.toFixed(1)}</td>
+            ${tankRemainCell}
             <td>${actionGuide}</td>
         </tr>`;
+    }
+
+    if (truncated) {
+        body.innerHTML += `<tr><td colspan="5" style="text-align:center; color:#d32f2f; font-size:0.85em; padding:8px; background:#fff3f3;">⚠️ Growth data available up to Day ${maxDay} only. Calculation truncated from Day ${days} to Day ${maxDay}.</td></tr>`;
     }
     
     document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
@@ -9862,7 +9873,7 @@ function calcPB() {
     } else {
         oneTankGuide = `${wePerTank.toFixed(1)}g`;
     }
-    document.getElementById('quickActionText').innerHTML = `* Each time the tank runs empty on the above dates, add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE.`;
+    document.getElementById('quickActionText').innerHTML = `* On each of the above dates (Day 1 = initial fill, others = when tank empties), add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE to the tank.`;
 
     const totalWeElem = document.getElementById('resPbTotal');
     const totalWeUnit = document.getElementById('resPbUnit');
