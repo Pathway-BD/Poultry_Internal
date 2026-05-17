@@ -9829,20 +9829,19 @@ function calcPB() {
         let trClass = "";
 
         if (refillsToday > 0) {
-            refillDays.push(d); 
-            const addWe = refillsToday * wePerTank;
-            totalG += addWe;
-            
+            refillDays.push(d);
+            totalG += refillsToday * wePerTank;
+
             let guideText = "";
             if (showUnits && pkgGrams > 0) {
-                let units = parseFloat((addWe / pkgGrams).toFixed(2));
+                let units = parseFloat((wePerTank / pkgGrams).toFixed(2));
                 guideText = `${units} ${pkgName}`;
             } else {
-                guideText = `${addWe.toFixed(1)}g`;
+                guideText = `${wePerTank.toFixed(1)}g`;
             }
 
             actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">Add WE: </span>${guideText}</span>`;
-            trClass = "refill-row"; 
+            trClass = "refill-row";
         }
 
         body.innerHTML += `<tr class="${trClass}">
