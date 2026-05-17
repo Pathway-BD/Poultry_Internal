@@ -9809,21 +9809,21 @@ function calcPB() {
     body.innerHTML = '';
     
     let totalG = 0;
-    let currentWaterL = 0; 
-    const wePerTank = tankVol * (ppm / 1000); 
+    let currentWaterL = tankVol;
+    const wePerTank = tankVol * (ppm / 1000);
     let refillDays = [];
 
     for (let d = 1; d <= days && d <= 40; d++) {
         const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
         const waterIntakeHeadMl = feedIntakeHead * wfRatio;
         const dailyHouseWaterL = (waterIntakeHeadMl * birds) / 1000;
-        
+
+        currentWaterL -= dailyHouseWaterL;
         let refillsToday = 0;
-        while (currentWaterL < dailyHouseWaterL) {
+        while (currentWaterL <= 0) {
             refillsToday++;
             currentWaterL += tankVol;
         }
-        currentWaterL -= dailyHouseWaterL;
         
         let actionGuide = `<span style="color:#bbb;">-</span>`;
         let trClass = "";
