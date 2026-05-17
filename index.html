@@ -1395,7 +1395,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <h4>Quick Action Schedule (Days)</h4>
                 <div id="resPbSchedule" style="line-height:1.8; margin-bottom: 10px;">-</div>
                 <p id="quickActionText" style="font-size:0.75em; color:#d32f2f; font-weight:bold; margin-top:10px; line-height:1.6; background:#fff3f3; padding:10px; border-radius:6px; border: 1px solid #ffcdd2;">
-                    * Each time the tank runs empty on the above dates, add <strong style="font-size:1.25em;">-</strong> of ProBe-Bac WE.
+                    * Please add <strong style="font-size:1.25em;">-</strong> of ProBe-Bac WE on the dates indicated above.
                 </p>
             </div>
             
@@ -9809,39 +9809,40 @@ function calcPB() {
     body.innerHTML = '';
     
     let totalG = 0;
-    let currentWaterL = tankVol;
-    const wePerTank = tankVol * (ppm / 1000);
+    let currentWaterL = 0; 
+    const wePerTank = tankVol * (ppm / 1000); 
     let refillDays = [];
 
     for (let d = 1; d <= days && d <= 40; d++) {
         const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
         const waterIntakeHeadMl = feedIntakeHead * wfRatio;
         const dailyHouseWaterL = (waterIntakeHeadMl * birds) / 1000;
-
-        currentWaterL -= dailyHouseWaterL;
+        
         let refillsToday = 0;
-        while (currentWaterL <= 0) {
+        while (currentWaterL < dailyHouseWaterL) {
             refillsToday++;
             currentWaterL += tankVol;
         }
+        currentWaterL -= dailyHouseWaterL;
         
         let actionGuide = `<span style="color:#bbb;">-</span>`;
         let trClass = "";
 
         if (refillsToday > 0) {
-            refillDays.push(d);
-            totalG += refillsToday * wePerTank;
-
+            refillDays.push(d); 
+            const addWe = refillsToday * wePerTank;
+            totalG += addWe;
+            
             let guideText = "";
             if (showUnits && pkgGrams > 0) {
-                let units = parseFloat((wePerTank / pkgGrams).toFixed(2));
+                let units = parseFloat((addWe / pkgGrams).toFixed(2));
                 guideText = `${units} ${pkgName}`;
             } else {
-                guideText = `${wePerTank.toFixed(1)}g`;
+                guideText = `${addWe.toFixed(1)}g`;
             }
 
             actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">Add WE: </span>${guideText}</span>`;
-            trClass = "refill-row";
+            trClass = "refill-row"; 
         }
 
         body.innerHTML += `<tr class="${trClass}">
@@ -9862,7 +9863,7 @@ function calcPB() {
     } else {
         oneTankGuide = `${wePerTank.toFixed(1)}g`;
     }
-    document.getElementById('quickActionText').innerHTML = `* Each time the tank runs empty on the above dates, add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE.`;
+    document.getElementById('quickActionText').innerHTML = `* Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE on the dates indicated above.`;
 
     const totalWeElem = document.getElementById('resPbTotal');
     const totalWeUnit = document.getElementById('resPbUnit');
@@ -10500,7 +10501,6 @@ function initDemoData() {
 initChart();
 initDemoData();
 broilerMobileCalc();
-calcPB();
 renderWiz();
 
 /* ── Lipidol Report JS ── */
