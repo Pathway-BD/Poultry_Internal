@@ -1395,7 +1395,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <h4>Quick Action Schedule (Days)</h4>
                 <div id="resPbSchedule" style="line-height:1.8; margin-bottom: 10px;">-</div>
                 <p id="quickActionText" style="font-size:0.75em; color:#d32f2f; font-weight:bold; margin-top:10px; line-height:1.6; background:#fff3f3; padding:10px; border-radius:6px; border: 1px solid #ffcdd2;">
-                    * Please add <strong style="font-size:1.25em;">-</strong> of ProBe-Bac WE on the dates indicated above.
+                    * Each time the tank runs empty on the above dates, add <strong style="font-size:1.25em;">-</strong> of ProBe-Bac WE.
                 </p>
             </div>
             
@@ -10500,6 +10500,7 @@ function initDemoData() {
 initChart();
 initDemoData();
 broilerMobileCalc();
+calcPB();
 renderWiz();
 
 /* ── Lipidol Report JS ── */
