@@ -1422,7 +1422,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
                 <div class="field-box" style="margin-top: 15px;">
                     <label class="toggle-switch">
-                        <input type="checkbox" id="pbDispUnitToggle" checked onchange="calcPB()">
+                        <input type="checkbox" id="pbDispUnitToggle" onchange="calcPB()">
                         <span style="font-weight:bold; color:#d32f2f; font-size: 0.95em;">Display in Units</span>
                     </label>
                 </div>
@@ -9815,12 +9815,6 @@ function calcPB() {
     const maxDay = 40;
     const effectiveDays = Math.min(days, maxDay);
     const truncated = days > maxDay;
-    const usePouchGrouping = showUnits && pkgGrams > 0 && wePerTank > 0;
-
-    let pouchNumber = 0;
-    let remainingInPouch = 0;
-    let pouchPeriods = [];
-    let currentPouchPeriod = null;
 
     for (let d = 1; d <= effectiveDays; d++) {
         const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
@@ -9829,26 +9823,9 @@ function calcPB() {
 
         currentWaterL -= dailyHouseWaterL;
         let refillsToday = 0;
-        let pouchesOpenedToday = [];
-
         while (currentWaterL <= 0) {
             refillsToday++;
             currentWaterL += tankVol;
-
-            if (usePouchGrouping) {
-                while (remainingInPouch < wePerTank) {
-                    pouchNumber++;
-                    pouchesOpenedToday.push(pouchNumber);
-                    remainingInPouch += pkgGrams;
-                    currentPouchPeriod = { number: pouchNumber, startDay: d, endDay: d, refillCount: 0 };
-                    pouchPeriods.push(currentPouchPeriod);
-                }
-                remainingInPouch -= wePerTank;
-                if (currentPouchPeriod) {
-                    currentPouchPeriod.refillCount++;
-                    currentPouchPeriod.endDay = d;
-                }
-            }
         }
 
         let actionGuide = `<span style="color:#bbb;">-</span>`;
@@ -9859,19 +9836,17 @@ function calcPB() {
             refillDays.push(d);
             totalG += refillsToday * wePerTank;
 
-            const refillBadge = (refillsToday > 1) ? ` <span style="font-size:0.75em; color:#d32f2f;">×${refillsToday}</span>` : '';
-
-            if (usePouchGrouping) {
-                if (pouchesOpenedToday.length > 0) {
-                    const pouchLabels = pouchesOpenedToday.map(n => `#${n}`).join(', ');
-                    actionGuide = `<span class="guide-action" style="background:#ffcdd2; color:#b71c1c;">📦 Open ${pkgName} ${pouchLabels}${refillBadge}</span>`;
-                } else {
-                    actionGuide = `<span class="guide-action">💧 Refill from ${pkgName} #${pouchNumber}${refillBadge}</span>`;
-                }
+            let guideText = "";
+            if (showUnits && pkgGrams > 0) {
+                let units = parseFloat((wePerTank / pkgGrams).toFixed(2));
+                guideText = `${units} ${pkgName}`;
             } else {
-                const actionLabel = (d === 1) ? 'Initial Fill' : 'Add WE';
-                actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">${actionLabel}: </span>${wePerTank.toFixed(1)}g${refillBadge}</span>`;
+                guideText = `${wePerTank.toFixed(1)}g`;
             }
+
+            const actionLabel = (d === 1) ? 'Initial Fill' : 'Add WE';
+            const refillBadge = (refillsToday > 1) ? ` <span style="font-size:0.75em; color:#d32f2f;">×${refillsToday}</span>` : '';
+            actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">${actionLabel}: </span>${guideText}${refillBadge}</span>`;
             trClass = "refill-row";
             tankRemainCell = `<td style="color:#666;"><span style="color:#d32f2f; font-weight:bold;">0</span> <span style="font-size:0.8em; color:#999;">→ ${currentWaterL.toFixed(1)}</span></td>`;
         }
@@ -9888,23 +9863,17 @@ function calcPB() {
     if (truncated) {
         body.innerHTML += `<tr><td colspan="5" style="text-align:center; color:#d32f2f; font-size:0.85em; padding:8px; background:#fff3f3;">⚠️ Growth data available up to Day ${maxDay} only. Calculation truncated from Day ${days} to Day ${maxDay}.</td></tr>`;
     }
-
-    if (usePouchGrouping && pouchPeriods.length > 0) {
-        const scheduleHtml = pouchPeriods.map(p => {
-            const dayRange = (p.startDay === p.endDay) ? `Day ${p.startDay}` : `Day ${p.startDay} ~ Day ${p.endDay}`;
-            return `<div style="margin-bottom:6px;"><span class="day-badge" style="background:#ffcdd2; color:#b71c1c;">📦 ${pkgName} #${p.number}</span> <span style="color:#555; font-size:0.9em;">covers ${dayRange} (${p.refillCount} refill${p.refillCount === 1 ? '' : 's'})</span></div>`;
-        }).join('');
-        document.getElementById('resPbSchedule').innerHTML = scheduleHtml;
+    
+    document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
+    
+    let oneTankGuide = "";
+    if (showUnits && pkgGrams > 0) {
+        let u = parseFloat((wePerTank / pkgGrams).toFixed(2));
+        oneTankGuide = `${u} ${pkgName}(s)`;
     } else {
-        document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
+        oneTankGuide = `${wePerTank.toFixed(1)}g`;
     }
-
-    if (usePouchGrouping) {
-        const refillsPerPouch = Math.floor(pkgGrams / wePerTank);
-        document.getElementById('quickActionText').innerHTML = `* Open one new <strong>${pkgName}</strong> (${pkgGrams}g) on each date above and use it for tank refills. One ${pkgName} covers approximately <strong style="font-size:1.15em;">${refillsPerPouch} refill${refillsPerPouch === 1 ? '' : 's'}</strong> of the ${tankVol}L tank.`;
-    } else {
-        document.getElementById('quickActionText').innerHTML = `* On each of the above dates (Day 1 = initial fill, others = when tank empties), add <strong style="font-size:1.25em;">${wePerTank.toFixed(1)}g</strong> of ProBe-Bac WE to the tank.`;
-    }
+    document.getElementById('quickActionText').innerHTML = `* On each of the above dates (Day 1 = initial fill, others = when tank empties), add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE to the tank.`;
 
     const totalWeElem = document.getElementById('resPbTotal');
     const totalWeUnit = document.getElementById('resPbUnit');
@@ -9918,8 +9887,8 @@ function calcPB() {
 
     const totalUnitsElem = document.getElementById('resPbTotalUnits');
     if (pkgGrams > 0) {
-        const totalPouchesNeeded = usePouchGrouping ? pouchNumber : Math.ceil(totalG / pkgGrams);
-        totalUnitsElem.innerText = `≈ ${totalPouchesNeeded} ${pkgName}${totalPouchesNeeded === 1 ? '' : 's'} Needed`;
+        let totalUnits = parseFloat((totalG / pkgGrams).toFixed(2));
+        totalUnitsElem.innerText = `≈ ${totalUnits} ${pkgName}s Needed`;
     } else {
         totalUnitsElem.innerText = `-`;
     }
