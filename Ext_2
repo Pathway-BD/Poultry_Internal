@@ -1197,6 +1197,12 @@ const reasonMap={
   'general_perf|Lipidol':'LPL technology — the foundational performance enhancer. M.V 100,000 kcal/kg.',
   'general_perf|Growmax':'Organic chromium for growth, stress resilience, and mortality reduction.',
   'general_perf|Endopower':'NSPase enzyme maximizes energy from corn-SBM diets. M.V 500,000 kcal/kg.',
+  'general_gut|Lipidol':'LPL technology supports gut integrity and nutrient absorption efficiency.',
+  'general_gut|Genikan':'Yeast metabolites promote beneficial gut microbiome balance and digestive health.',
+  'general_gut|ProBe-Bac':'Bacteriophage eliminates pathogenic bacteria, restoring gut microbial balance.',
+  'general_cost|Lipidol':'LPL technology improves nutrient utilization, enabling feed cost reduction without performance loss.',
+  'general_cost|Genikan':'Yeast culture enhances feed palatability and digestibility, improving feed efficiency.',
+  'general_cost|ProBe-Bac':'Bacteriophage replaces costly antibiotics, reducing treatment costs while maintaining gut health.',
 };
 
 function getReasonComment(detail,productName){
