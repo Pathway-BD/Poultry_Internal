@@ -18,7 +18,11 @@
         width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px;
         font-size: 15px; background: #fff;
     }
-    .toggle-switch { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .toggle-switch { display: inline-flex; align-items: center; cursor: pointer; gap: 10px; margin-top: 5px; }
+    .toggle-switch input { appearance: none; width: 44px; height: 24px; background: #ccc; border-radius: 20px; position: relative; outline: none; cursor: pointer; transition: background 0.3s; margin: 0; }
+    .toggle-switch input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .toggle-switch input:checked { background: #d32f2f; }
+    .toggle-switch input:checked::after { transform: translateX(20px); }
 
     .res-card {
         padding: 20px; border-radius: 12px; border: 1px solid #dee2e6;
