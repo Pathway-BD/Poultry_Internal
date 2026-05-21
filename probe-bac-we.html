@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProBe-Bac WE Application Plan</title>
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; color: #333; padding: 20px; }
+
+    h2 { font-size: 1.4em; color: #1e3a7a; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #004a99; }
+    h3 { font-size: 1.1em; color: #1e3a7a; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #cdd5e0; }
+    h4 { margin: 0 0 15px 0; border-bottom: 1px solid #eee; padding-bottom: 8px; font-size: 1.1em; width: 100%; }
+
+    .field-box { margin-bottom: 8px; }
+    .field-box label { display: block; font-size: 0.85em; font-weight: 600; color: #455a64; margin-bottom: 4px; }
+    .field-box input, .field-box select {
+        width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px;
+        font-size: 15px; background: #fff;
+    }
+    .toggle-switch { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+    .res-card {
+        padding: 20px; border-radius: 12px; border: 1px solid #dee2e6;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05); background: #fff; margin-bottom: 0;
+    }
+    .res-card.schedule-summary { border-left: 10px solid #e65100; background: #fff; }
+    .res-card.we-total {
+        border-left: 10px solid #28a745; background: #f4fff6;
+        display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+    }
+    .res-card.pkg-settings { border-left: 10px solid #17a2b8; background: #fff; }
+
+    .pb-top-layout { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    .pb-dual-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; grid-column: 2 / span 2; }
+    .pb-bottom-layout { display: grid; grid-template-columns: 1.8fr 1fr; gap: 15px; }
+
+    .table-scroll { height: 500px; overflow-y: auto; border: 1px solid #eee; border-radius: 8px; }
+    .table-scroll table { width: 100%; border-collapse: collapse; }
+    .table-scroll th {
+        font-size: 0.9em; padding: 12px 5px; position: sticky; top: 0;
+        background: #004a99; color: white; border-color: #003366; text-align: center;
+    }
+    .table-scroll td { font-size: 0.95em; padding: 12px 5px; vertical-align: middle; text-align: center; border-bottom: 1px solid #f0f0f0; }
+
+    .refill-row { background-color: #fff8e1; }
+    .guide-action {
+        color: #d32f2f; font-weight: bold; font-size: 1.1em;
+        background: #ffecb3; padding: 5px 10px; border-radius: 5px; display: inline-block;
+    }
+    .day-badge {
+        display: inline-block; background: #e65100; color: #fff;
+        border-radius: 5px; padding: 2px 8px; font-size: 0.9em; margin: 2px;
+    }
+
+    .input-group {
+        margin-bottom: 0; padding: 16px; background: #fff9f0;
+        border: 1px solid #ffe0b2; border-radius: 8px; height: 100%;
+    }
+
+    .bottom-note {
+        margin-top: 15px; padding: 12px 16px;
+        background: #e8f4fd; border-left: 4px solid #007bff;
+        border-radius: 6px; font-size: 0.9em; color: #444;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+        .pb-top-layout, .pb-bottom-layout { grid-template-columns: 1fr !important; }
+        .pb-dual-wrap { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px; grid-column: auto !important; }
+        .pb-dual-wrap .res-card { grid-column: auto !important; margin-bottom: 0; padding: 12px 10px !important; }
+        .pb-dual-wrap h4 { font-size: 0.78em !important; white-space: nowrap !important; overflow: hidden; text-overflow: ellipsis; }
+        .pb-dual-wrap .we-total div[style*="font-size: 3em"] { font-size: 2.2em !important; }
+        .pb-dual-wrap label { font-size: 0.75em !important; line-height: 1.3; }
+        .pb-dual-wrap input[type="text"] { font-size: 14px !important; padding: 6px 8px !important; }
+        .table-scroll { height: 260px; }
+    }
+</style>
+</head>
+<body>
+
+<h2>ProBe-Bac WE Application Plan</h2>
+
+<div class="pb-top-layout">
+    <div class="res-card schedule-summary">
+        <h4>Quick Action Schedule (Days)</h4>
+        <div id="resPbSchedule" style="line-height:1.8; margin-bottom: 10px;">-</div>
+        <p id="quickActionText" style="font-size:0.75em; color:#d32f2f; font-weight:bold; margin-top:10px; line-height:1.6; background:#fff3f3; padding:10px; border-radius:6px; border: 1px solid #ffcdd2;">
+            * Please add <strong style="font-size:1.25em;">-</strong> of ProBe-Bac WE on the dates indicated above.
+        </p>
+    </div>
+
+    <div class="pb-dual-wrap">
+        <div class="res-card we-total">
+            <h4 style="text-align: center; border-bottom: none; margin-bottom: 5px; color: #333; font-size: 0.95em;">Full Period Dosage</h4>
+            <div style="font-size: 3em; font-weight: 900; color: #28a745; margin-top: 5px; line-height: 1;">
+                <span id="resPbTotal">-</span><span id="resPbUnit" style="font-size: 0.4em; color: #555; margin-left: 5px;">kg</span>
+            </div>
+            <div id="resPbTotalUnits" style="font-size: 1.05em; color: #007bff; font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc; width: 80%;">
+                -
+            </div>
+        </div>
+
+        <div class="res-card pkg-settings">
+            <h4>Package Settings</h4>
+            <div class="field-box">
+                <label>Unit Name:</label>
+                <input type="text" id="pbPkgName" value="Pouch" oninput="calcPB()">
+            </div>
+            <div class="field-box">
+                <label>Grams / Unit (g):</label>
+                <input type="text" inputmode="decimal" id="pbPkgGrams" value="500" oninput="formatNum(this); calcPB()">
+            </div>
+            <div class="field-box" style="margin-top: 15px;">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="pbDispUnitToggle" onchange="calcPB()">
+                    <span style="font-weight:bold; color:#d32f2f; font-size: 0.95em;">Display in Units</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pb-bottom-layout">
+    <div class="pb-left">
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Feed<br>(g/head)</th>
+                        <th>Daily Water Use<br>(L/House)</th>
+                        <th>Tank Remain<br>(L)</th>
+                        <th>Action Guide<br>(When Tank Empty)</th>
+                    </tr>
+                </thead>
+                <tbody id="pbTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="pb-right">
+        <div class="input-group">
+            <h3 style="color:#e65100; margin-top:0;">Farm Variables</h3>
+            <div class="field-box">
+                <label>Breed:</label>
+                <select id="pbBreed" onchange="calcPB()">
+                    <option value="cobb500">Cobb 500</option>
+                    <option value="ross308">Ross 308</option>
+                </select>
+            </div>
+            <div class="field-box">
+                <label>Marketed Days:</label>
+                <input type="text" inputmode="decimal" id="pbDays" value="35" oninput="formatNum(this); calcPB()">
+            </div>
+            <div class="field-box">
+                <label>No. of Birds:</label>
+                <input type="text" inputmode="decimal" id="pbBirds" value="20,000" oninput="formatNum(this); calcPB()">
+            </div>
+            <div class="field-box">
+                <label>Water:Feed Ratio:</label>
+                <input type="text" inputmode="decimal" id="pbWFRatio" value="1.8" oninput="calcPB()">
+            </div>
+            <div class="field-box">
+                <label>Water Tank Vol. (L):</label>
+                <input type="text" inputmode="decimal" id="pbTank" value="1,000" oninput="formatNum(this); calcPB()">
+            </div>
+            <div class="field-box">
+                <label>WE Concentration (ppm):</label>
+                <input type="text" inputmode="decimal" id="pbPpm" value="15" oninput="formatNum(this); calcPB()">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="bottom-note">
+    * <strong>Equivalent in Feed:</strong> Based on the variables, the birds are effectively consuming the active ingredient equivalent to mixing <strong style="color:#007bff; font-size:1.1em;"><span id="resPbEqFeedDesc">-</span>g</strong> of feed-grade additive per 1 MT of feed.
+</div>
+
+<script>
+const data = {
+    ross308: {
+        0: {weight: 44, dailyGain: 0, avgDailyGain: 0, dailyIntake: 0, cumIntake: 0, fcr: 0},
+        1: {weight: 62, dailyGain: 18, avgDailyGain: 18, dailyIntake: 12, cumIntake: 12, fcr: 0.196},
+        2: {weight: 81, dailyGain: 19, avgDailyGain: 19, dailyIntake: 16, cumIntake: 28, fcr: 0.352},
+        3: {weight: 102, dailyGain: 21, avgDailyGain: 21, dailyIntake: 20, cumIntake: 48, fcr: 0.476},
+        4: {weight: 125, dailyGain: 23, avgDailyGain: 23, dailyIntake: 24, cumIntake: 72, fcr: 0.577},
+        5: {weight: 151, dailyGain: 26, avgDailyGain: 26, dailyIntake: 27, cumIntake: 100, fcr: 0.658},
+        6: {weight: 181, dailyGain: 29, avgDailyGain: 29, dailyIntake: 31, cumIntake: 131, fcr: 0.724},
+        7: {weight: 213, dailyGain: 32, avgDailyGain: 24, dailyIntake: 35, cumIntake: 166, fcr: 0.780},
+        8: {weight: 249, dailyGain: 36, avgDailyGain: 26, dailyIntake: 39, cumIntake: 206, fcr: 0.826},
+        9: {weight: 288, dailyGain: 39, avgDailyGain: 27, dailyIntake: 44, cumIntake: 249, fcr: 0.865},
+        10: {weight: 330, dailyGain: 42, avgDailyGain: 29, dailyIntake: 48, cumIntake: 297, fcr: 0.900},
+        11: {weight: 376, dailyGain: 46, avgDailyGain: 30, dailyIntake: 52, cumIntake: 349, fcr: 0.930},
+        12: {weight: 425, dailyGain: 49, avgDailyGain: 32, dailyIntake: 57, cumIntake: 406, fcr: 0.957},
+        13: {weight: 477, dailyGain: 52, avgDailyGain: 33, dailyIntake: 62, cumIntake: 468, fcr: 0.982},
+        14: {weight: 533, dailyGain: 56, avgDailyGain: 35, dailyIntake: 67, cumIntake: 535, fcr: 1.005},
+        15: {weight: 592, dailyGain: 59, avgDailyGain: 37, dailyIntake: 72, cumIntake: 608, fcr: 1.026},
+        16: {weight: 655, dailyGain: 62, avgDailyGain: 38, dailyIntake: 77, cumIntake: 685, fcr: 1.047},
+        17: {weight: 720, dailyGain: 66, avgDailyGain: 40, dailyIntake: 83, cumIntake: 768, fcr: 1.066},
+        18: {weight: 789, dailyGain: 69, avgDailyGain: 41, dailyIntake: 88, cumIntake: 856, fcr: 1.086},
+        19: {weight: 860, dailyGain: 72, avgDailyGain: 43, dailyIntake: 94, cumIntake: 950, fcr: 1.105},
+        20: {weight: 935, dailyGain: 74, avgDailyGain: 45, dailyIntake: 100, cumIntake: 1050, fcr: 1.123},
+        21: {weight: 1012, dailyGain: 77, avgDailyGain: 46, dailyIntake: 105, cumIntake: 1155, fcr: 1.142},
+        22: {weight: 1092, dailyGain: 80, avgDailyGain: 48, dailyIntake: 111, cumIntake: 1266, fcr: 1.160},
+        23: {weight: 1174, dailyGain: 82, avgDailyGain: 49, dailyIntake: 117, cumIntake: 1383, fcr: 1.178},
+        24: {weight: 1258, dailyGain: 85, avgDailyGain: 51, dailyIntake: 122, cumIntake: 1505, fcr: 1.196},
+        25: {weight: 1345, dailyGain: 87, avgDailyGain: 52, dailyIntake: 128, cumIntake: 1633, fcr: 1.214},
+        26: {weight: 1434, dailyGain: 89, avgDailyGain: 53, dailyIntake: 134, cumIntake: 1767, fcr: 1.233},
+        27: {weight: 1524, dailyGain: 91, avgDailyGain: 55, dailyIntake: 139, cumIntake: 1907, fcr: 1.251},
+        28: {weight: 1616, dailyGain: 92, avgDailyGain: 56, dailyIntake: 145, cumIntake: 2051, fcr: 1.269},
+        29: {weight: 1710, dailyGain: 94, avgDailyGain: 57, dailyIntake: 150, cumIntake: 2202, fcr: 1.288},
+        30: {weight: 1805, dailyGain: 95, avgDailyGain: 59, dailyIntake: 156, cumIntake: 2357, fcr: 1.306},
+        31: {weight: 1901, dailyGain: 96, avgDailyGain: 60, dailyIntake: 161, cumIntake: 2518, fcr: 1.325},
+        32: {weight: 1999, dailyGain: 97, avgDailyGain: 61, dailyIntake: 166, cumIntake: 2684, fcr: 1.343},
+        33: {weight: 2097, dailyGain: 98, avgDailyGain: 62, dailyIntake: 171, cumIntake: 2855, fcr: 1.362},
+        34: {weight: 2196, dailyGain: 99, avgDailyGain: 63, dailyIntake: 176, cumIntake: 3031, fcr: 1.381},
+        35: {weight: 2296, dailyGain: 100, avgDailyGain: 64, dailyIntake: 180, cumIntake: 3211, fcr: 1.399},
+        36: {weight: 2396, dailyGain: 100, avgDailyGain: 65, dailyIntake: 185, cumIntake: 3396, fcr: 1.418},
+        37: {weight: 2496, dailyGain: 100, avgDailyGain: 66, dailyIntake: 189, cumIntake: 3584, fcr: 1.437},
+        38: {weight: 2597, dailyGain: 101, avgDailyGain: 67, dailyIntake: 193, cumIntake: 3777, fcr: 1.456},
+        39: {weight: 2697, dailyGain: 101, avgDailyGain: 68, dailyIntake: 197, cumIntake: 3974, fcr: 1.474},
+        40: {weight: 2798, dailyGain: 100, avgDailyGain: 69, dailyIntake: 201, cumIntake: 4175, fcr: 1.493}
+    },
+    cobb500: {
+        0: {weight: 42, dailyGain: 0, avgDailyGain: 0, dailyIntake: 0, cumIntake: 0, fcr: 0},
+        1: {weight: 55, dailyGain: 13, avgDailyGain: 13, dailyIntake: 12, cumIntake: 12, fcr: 0.218},
+        2: {weight: 71, dailyGain: 16, avgDailyGain: 16, dailyIntake: 16, cumIntake: 28, fcr: 0.394},
+        3: {weight: 90, dailyGain: 19, avgDailyGain: 19, dailyIntake: 20, cumIntake: 48, fcr: 0.533},
+        4: {weight: 112, dailyGain: 22, avgDailyGain: 22, dailyIntake: 24, cumIntake: 72, fcr: 0.643},
+        5: {weight: 138, dailyGain: 26, avgDailyGain: 26, dailyIntake: 27, cumIntake: 99, fcr: 0.717},
+        6: {weight: 168, dailyGain: 30, avgDailyGain: 30, dailyIntake: 31, cumIntake: 140, fcr: 0.833},
+        7: {weight: 202, dailyGain: 34, avgDailyGain: 22.9, dailyIntake: 35, cumIntake: 180, fcr: 0.891},
+        8: {weight: 240, dailyGain: 38, avgDailyGain: 24.8, dailyIntake: 40, cumIntake: 220, fcr: 0.917},
+        9: {weight: 283, dailyGain: 43, avgDailyGain: 26.8, dailyIntake: 44, cumIntake: 264, fcr: 0.933},
+        10: {weight: 330, dailyGain: 47, avgDailyGain: 28.8, dailyIntake: 50, cumIntake: 314, fcr: 0.952},
+        11: {weight: 382, dailyGain: 52, avgDailyGain: 30.9, dailyIntake: 57, cumIntake: 371, fcr: 0.971},
+        12: {weight: 440, dailyGain: 58, avgDailyGain: 33.2, dailyIntake: 64, cumIntake: 435, fcr: 0.991},
+        13: {weight: 503, dailyGain: 63, avgDailyGain: 35.5, dailyIntake: 73, cumIntake: 508, fcr: 1.012},
+        14: {weight: 570, dailyGain: 67, avgDailyGain: 37.7, dailyIntake: 80, cumIntake: 588, fcr: 1.029},
+        15: {weight: 639, dailyGain: 69, avgDailyGain: 39.8, dailyIntake: 84, cumIntake: 672, fcr: 1.050},
+        16: {weight: 711, dailyGain: 72, avgDailyGain: 41.8, dailyIntake: 91, cumIntake: 763, fcr: 1.072},
+        17: {weight: 786, dailyGain: 75, avgDailyGain: 43.8, dailyIntake: 98, cumIntake: 861, fcr: 1.094},
+        18: {weight: 864, dailyGain: 78, avgDailyGain: 45.7, dailyIntake: 105, cumIntake: 966, fcr: 1.116},
+        19: {weight: 945, dailyGain: 81, avgDailyGain: 47.5, dailyIntake: 111, cumIntake: 1077, fcr: 1.138},
+        20: {weight: 1029, dailyGain: 84, avgDailyGain: 49.4, dailyIntake: 118, cumIntake: 1195, fcr: 1.160},
+        21: {weight: 1116, dailyGain: 87, avgDailyGain: 51.1, dailyIntake: 125, cumIntake: 1320, fcr: 1.182},
+        22: {weight: 1205, dailyGain: 89, avgDailyGain: 52.9, dailyIntake: 131, cumIntake: 1451, fcr: 1.203},
+        23: {weight: 1296, dailyGain: 91, avgDailyGain: 54.5, dailyIntake: 137, cumIntake: 1588, fcr: 1.224},
+        24: {weight: 1390, dailyGain: 94, avgDailyGain: 56.2, dailyIntake: 143, cumIntake: 1731, fcr: 1.245},
+        25: {weight: 1486, dailyGain: 96, avgDailyGain: 57.8, dailyIntake: 149, cumIntake: 1880, fcr: 1.265},
+        26: {weight: 1583, dailyGain: 97, avgDailyGain: 59.3, dailyIntake: 154, cumIntake: 2034, fcr: 1.284},
+        27: {weight: 1682, dailyGain: 99, avgDailyGain: 60.7, dailyIntake: 160, cumIntake: 2194, fcr: 1.303},
+        28: {weight: 1783, dailyGain: 101, avgDailyGain: 62.2, dailyIntake: 165, cumIntake: 2359, fcr: 1.322},
+        29: {weight: 1886, dailyGain: 103, avgDailyGain: 63.6, dailyIntake: 169, cumIntake: 2528, fcr: 1.340},
+        30: {weight: 1989, dailyGain: 103, avgDailyGain: 64.9, dailyIntake: 174, cumIntake: 2702, fcr: 1.358},
+        31: {weight: 2094, dailyGain: 105, avgDailyGain: 66.2, dailyIntake: 178, cumIntake: 2880, fcr: 1.375},
+        32: {weight: 2200, dailyGain: 106, avgDailyGain: 67.4, dailyIntake: 183, cumIntake: 3063, fcr: 1.392},
+        33: {weight: 2306, dailyGain: 106, avgDailyGain: 68.6, dailyIntake: 187, cumIntake: 3250, fcr: 1.409},
+        34: {weight: 2413, dailyGain: 107, avgDailyGain: 69.7, dailyIntake: 191, cumIntake: 3441, fcr: 1.425},
+        35: {weight: 2521, dailyGain: 108, avgDailyGain: 70.8, dailyIntake: 194, cumIntake: 3635, fcr: 1.441},
+        36: {weight: 2629, dailyGain: 108, avgDailyGain: 71.9, dailyIntake: 198, cumIntake: 3833, fcr: 1.457},
+        37: {weight: 2738, dailyGain: 109, avgDailyGain: 72.9, dailyIntake: 202, cumIntake: 4035, fcr: 1.474},
+        38: {weight: 2846, dailyGain: 108, avgDailyGain: 73.8, dailyIntake: 206, cumIntake: 4241, fcr: 1.490},
+        39: {weight: 2954, dailyGain: 108, avgDailyGain: 74.7, dailyIntake: 209, cumIntake: 4450, fcr: 1.506},
+        40: {weight: 3062, dailyGain: 108, avgDailyGain: 75.5, dailyIntake: 213, cumIntake: 4663, fcr: 1.522}
+    }
+};
+
+function formatNum(el) {
+    let val = el.value.replace(/,/g, '');
+    if (val === '') { el.value = ''; return; }
+    if (!isNaN(val)) {
+        let parts = val.split('.');
+        if (parts[0].length > 0) parts[0] = parseInt(parts[0], 10).toLocaleString('en-US');
+        el.value = parts.join('.');
+    }
+}
+
+function getVal(id, def = 0) {
+    let el = document.getElementById(id);
+    if (!el) return def;
+    let val = el.value.toString().replace(/,/g, '');
+    let num = parseFloat(val);
+    return isNaN(num) ? def : num;
+}
+
+function formatDays(days) {
+    if (!days || days.length === 0) return "No refills required.";
+    let ranges = [];
+    let start = days[0];
+    let prev = days[0];
+    for (let i = 1; i <= days.length; i++) {
+        if (i < days.length && days[i] === prev + 1) {
+            prev = days[i];
+        } else {
+            if (start === prev) {
+                ranges.push(`<span class="day-badge">Day ${start}</span>`);
+            } else if (prev === start + 1) {
+                ranges.push(`<span class="day-badge">Day ${start}</span> <span class="day-badge">Day ${prev}</span>`);
+            } else {
+                ranges.push(`<span class="day-badge">Day ${start}~${prev}</span>`);
+            }
+            if (i < days.length) { start = days[i]; prev = days[i]; }
+        }
+    }
+    return ranges.join(' ');
+}
+
+function calcPB() {
+    const breed = document.getElementById('pbBreed').value;
+    const days = getVal('pbDays', 35);
+    const birds = getVal('pbBirds', 20000);
+    const wfRatio = getVal('pbWFRatio', 1.8);
+    const ppm = getVal('pbPpm', 15);
+    const tankVol = Math.max(getVal('pbTank', 1000), 10);
+    const pkgName = document.getElementById('pbPkgName').value || 'Unit';
+    const pkgGrams = getVal('pbPkgGrams', 500);
+    const showUnits = document.getElementById('pbDispUnitToggle').checked;
+
+    const body = document.getElementById('pbTableBody');
+    body.innerHTML = '';
+
+    let totalG = 0;
+    let currentWaterL = 0;
+    const wePerTank = tankVol * (ppm / 1000);
+    let refillDays = [];
+
+    for (let d = 1; d <= days && d <= 40; d++) {
+        const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
+        const waterIntakeHeadMl = feedIntakeHead * wfRatio;
+        const dailyHouseWaterL = (waterIntakeHeadMl * birds) / 1000;
+
+        let refillsToday = 0;
+        while (currentWaterL < dailyHouseWaterL) {
+            refillsToday++;
+            currentWaterL += tankVol;
+        }
+        currentWaterL -= dailyHouseWaterL;
+
+        let actionGuide = `<span style="color:#bbb;">-</span>`;
+        let trClass = "";
+
+        if (refillsToday > 0) {
+            refillDays.push(d);
+            const addWe = refillsToday * wePerTank;
+            totalG += addWe;
+            let guideText = "";
+            if (showUnits && pkgGrams > 0) {
+                let units = parseFloat((addWe / pkgGrams).toFixed(2));
+                guideText = `${units} ${pkgName}`;
+            } else {
+                guideText = `${addWe.toFixed(1)}g`;
+            }
+            actionGuide = `<span class="guide-action">💧 <span style="font-size: 0.8em; font-weight: normal;">Add WE: </span>${guideText}</span>`;
+            trClass = "refill-row";
+        }
+
+        body.innerHTML += `<tr class="${trClass}">
+            <td><strong>Day ${d}</strong></td>
+            <td>${feedIntakeHead.toFixed(1)}</td>
+            <td>${dailyHouseWaterL.toFixed(1)}</td>
+            <td style="color:#666;">${currentWaterL.toFixed(1)}</td>
+            <td>${actionGuide}</td>
+        </tr>`;
+    }
+
+    document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
+
+    let oneTankGuide = "";
+    if (showUnits && pkgGrams > 0) {
+        let u = parseFloat((wePerTank / pkgGrams).toFixed(2));
+        oneTankGuide = `${u} ${pkgName}(s)`;
+    } else {
+        oneTankGuide = `${wePerTank.toFixed(1)}g`;
+    }
+    document.getElementById('quickActionText').innerHTML = `* Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE on the dates indicated above.`;
+
+    const totalWeElem = document.getElementById('resPbTotal');
+    const totalWeUnit = document.getElementById('resPbUnit');
+    if (totalG <= 500) {
+        totalWeElem.innerText = totalG.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1});
+        totalWeUnit.innerText = 'g';
+    } else {
+        totalWeElem.innerText = (totalG / 1000).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        totalWeUnit.innerText = 'kg';
+    }
+
+    const totalUnitsElem = document.getElementById('resPbTotalUnits');
+    if (pkgGrams > 0) {
+        let totalUnits = parseFloat((totalG / pkgGrams).toFixed(2));
+        totalUnitsElem.innerText = `≈ ${totalUnits} ${pkgName}s Needed`;
+    } else {
+        totalUnitsElem.innerText = `-`;
+    }
+
+    const eqFeedDosage = ppm * wfRatio * 10;
+    document.getElementById('resPbEqFeedDesc').innerText = eqFeedDosage.toFixed(0);
+}
+
+calcPB();
+</script>
+</body>
+</html>
