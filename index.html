@@ -562,6 +562,27 @@
         .dg-settings-panel .field-box input, .dg-settings-panel .field-box select { font-size: 13px; padding: 6px 8px; }
         .dg-settings-hint { background: #f0fff4; border: 1px solid #c3e6cb; border-radius: 6px; padding: 7px 10px; font-size: 0.73em; color: #2d8a4e; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
 
+        /* ── ProBe-Bac WE Mobile FAB + Bottom-Sheet Panel ── */
+        #tab3 .fv-handle, #tab3 .fv-close-btn, #tab3 .dg-settings-panel-close, #tab3 .fv-panel-header { display: none; }
+        #tab3 .vars-fab { display: none; position: fixed; bottom: 24px; right: 18px; height: 46px; border-radius: 23px; padding: 0 18px 0 14px; border: none; color: #fff; cursor: pointer; font-size: 0.88em; font-weight: 700; letter-spacing: 0.3px; box-shadow: 0 4px 18px rgba(0,0,0,0.28); z-index: 1001; align-items: center; justify-content: center; gap: 7px; transition: transform 0.18s, box-shadow 0.18s; white-space: nowrap; }
+        #tab3 .vars-fab:active { transform: scale(0.94); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        #tab3 .vars-fab .fab-icon { font-size: 1.15em; }
+        #tab3 .vars-fab-tank { background: #e65100; }
+        #tab3 .vars-fab-dosatron { background: #4b2791; }
+        #tab3 .vars-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.48); z-index: 1001; backdrop-filter: blur(2px); }
+        #tab3 .vars-overlay.panel-open { display: block; }
+        @media (max-width: 768px) {
+            #tab3 #pbFarmVarsCard, #tab3 #dgRight { position: fixed !important; left: 0; right: 0; bottom: -100vh; width: 100%; max-height: 85vh; overflow-y: auto; overflow-x: hidden; background: #fff; border-radius: 22px 22px 0 0 !important; border-left: none !important; box-shadow: 0 -6px 30px rgba(0,0,0,0.25) !important; z-index: 1002; transition: bottom 0.32s cubic-bezier(0.32,0.72,0,1); margin: 0 !important; padding: 0 !important; }
+            #tab3 #pbFarmVarsCard.panel-open, #tab3 #dgRight.panel-open { bottom: 0 !important; }
+            #tab3 .fv-panel-inner { padding: 16px 18px 30px; }
+            #tab3 .fv-handle { display: block; width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 12px auto 14px; }
+            #tab3 .fv-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+            #tab3 .fv-close-btn { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; border: none; background: #f0f0f0; color: #333; font-size: 1.5em; font-weight: 900; cursor: pointer; flex-shrink: 0; }
+            #tab3 .dg-settings-panel-close { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; border: none; background: #f0f0f0; color: #333; font-size: 1.5em; font-weight: 900; cursor: pointer; flex-shrink: 0; margin-left: auto; }
+            #tab3 .vars-fab { display: flex; }
+            #tab3 .vars-fab.hidden { display: none !important; }
+        }
+
         /* Lipidol Sheet Specific Styles */
         .lipidol-layout { display: grid; grid-template-columns: 1.8fr 1fr; gap: 25px; align-items: start; }
         .compact-input-group { padding: 15px 20px; }
@@ -1630,9 +1651,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </div><!-- /dg-left -->
 
             <!-- RIGHT: Unified Settings Panel -->
-            <div class="dg-right">
+            <div class="dg-right" id="dgRight">
+                <div class="fv-handle"></div>
                 <div class="dg-settings-panel">
-                    <div class="dg-settings-header">⚙️ FARM &amp; OPERATION SETTINGS</div>
+                    <div class="dg-settings-header" style="justify-content:space-between;">
+                        <span>⚙️ FARM &amp; OPERATION SETTINGS</span>
+                        <button class="dg-settings-panel-close" onclick="closePBAllPanels()">✕</button>
+                    </div>
                     <div class="dg-settings-body">
 
                         <div class="dg-settings-group">
@@ -1774,7 +1799,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 </div>
             </div>
             <div class="res-card farm-vars-card" id="pbFarmVarsCard">
-                <h4 style="color:#e65100;">Farm Variables</h4>
+                <div class="fv-handle"></div>
+                <div class="fv-panel-inner">
+                <div class="fv-panel-header">
+                    <h4 style="color:#e65100; margin:0; border-bottom:none; padding-bottom:0;">Farm Variables</h4>
+                    <button class="fv-close-btn" onclick="closePBAllPanels()">✕</button>
+                </div>
                 <div class="field-box">
                     <label>Breed:</label>
                     <select id="pbBreedVis" onchange="document.getElementById('pbBreed').value=this.value; calcPB()">
@@ -1803,6 +1833,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <label>WE Concentration in Drinking Water (ppm):</label>
                     <input type="text" inputmode="decimal" id="pbPpm" value="50" oninput="formatNum(this); calcPB()">
                 </div>
+                </div><!-- /fv-panel-inner -->
             </div>
         </div>
 
@@ -1813,6 +1844,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="bottom-bar">
             <span class="tip-text">💡 Tip: Keep stock solution well mixed and refill before the tank is empty.</span>
         </div>
+
+        <!-- Mobile FAB buttons (ProBe-Bac WE only) -->
+        <button class="vars-fab vars-fab-tank" id="pbFarmVarsFab" onclick="togglePBFarmPanel()" aria-label="Farm Variables">
+            <span class="fab-icon">✏️</span> Enter Farm Info
+        </button>
+        <button class="vars-fab vars-fab-dosatron hidden" id="pbDosatronFab" onclick="togglePBDosatronPanel()" aria-label="Dosatron Settings">
+            <span class="fab-icon">✏️</span> Enter Farm Info
+        </button>
+        <div class="vars-overlay" id="pbVarsOverlay" onclick="closePBAllPanels()"></div>
 
     </div>
 
@@ -10134,6 +10174,36 @@ function dgSyncCheck(fromId, toId) {
     if (from && to) to.checked = from.checked;
 }
 
+function closePBAllPanels() {
+    ['pbFarmVarsCard','dgRight'].forEach(id => {
+        document.getElementById(id)?.classList.remove('panel-open');
+    });
+    document.getElementById('pbVarsOverlay')?.classList.remove('panel-open');
+    document.body.style.overflow = '';
+}
+function togglePBFarmPanel() {
+    const card = document.getElementById('pbFarmVarsCard');
+    const overlay = document.getElementById('pbVarsOverlay');
+    const isOpen = card.classList.contains('panel-open');
+    closePBAllPanels();
+    if (!isOpen) {
+        card.classList.add('panel-open');
+        overlay.classList.add('panel-open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+function togglePBDosatronPanel() {
+    const panel = document.getElementById('dgRight');
+    const overlay = document.getElementById('pbVarsOverlay');
+    const isOpen = panel.classList.contains('panel-open');
+    closePBAllPanels();
+    if (!isOpen) {
+        panel.classList.add('panel-open');
+        overlay.classList.add('panel-open');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
 let _dgLastMode = '';
 function initDosatronGuide() {
     const map = [
@@ -10276,6 +10346,21 @@ function calcPB() {
     document.getElementById('pbThRemain').innerHTML = isDosatron ? 'Stock Tank Remain<br>(L)' : 'Tank Remain<br>(L)';
     document.getElementById('pbThAction').innerHTML = isDosatron ? 'Action Guide<br>(Stock Empty)' : 'Action Guide<br>(When Tank Empty)';
     document.getElementById('dosatronNote').style.display = isDosatron ? 'inline' : 'none';
+
+    /* ── Mobile FAB visibility ── */
+    const pbFarmFab = document.getElementById('pbFarmVarsFab');
+    const pbDosaFab = document.getElementById('pbDosatronFab');
+    if (isDosatron) {
+        pbFarmFab?.classList.add('hidden');
+        pbDosaFab?.classList.remove('hidden');
+        document.getElementById('pbFarmVarsCard').classList.remove('panel-open');
+    } else {
+        pbFarmFab?.classList.remove('hidden');
+        pbDosaFab?.classList.add('hidden');
+        document.getElementById('dgRight').classList.remove('panel-open');
+    }
+    document.getElementById('pbVarsOverlay')?.classList.remove('panel-open');
+    document.body.style.overflow = '';
 
     /* ── Derived values ── */
     const wePerTank = tankVol * (ppm / 1000);
