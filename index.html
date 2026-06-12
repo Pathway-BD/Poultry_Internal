@@ -10377,11 +10377,13 @@ function calcPB() {
     }
 
     /* ── Build table ── */
+    const showFullPeriod = document.getElementById('pbDosageViewToggle')?.checked;
     const body = document.getElementById('pbTableBody');
     body.innerHTML = '';
     let totalG = 0;
     let currentRemain = 0;
     let refillDays = [];
+    let refillDaysAll = [];
 
     for (let d = 1; d <= days && d <= 40; d++) {
         const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
@@ -10423,16 +10425,23 @@ function calcPB() {
             while (currentRemain < dailyHouseWaterL) { refillsToday++; currentRemain += tankVol; }
             currentRemain -= dailyHouseWaterL;
             const isInPeriod = d >= startDay && d <= endDay;
-            if (refillsToday > 0 && isInPeriod) {
-                refillDays.push(d);
-                const addWe = refillsToday * wePerTank;
-                totalG += addWe;
-                const guideText = showUnits && pkgGrams > 0
-                    ? `${fmtPct(addWe / pkgGrams)} ${pkgName}`
-                    : `${fmt0(addWe)}g`;
-                actionGuide = `<span class="guide-action">💧 <span style="font-size:0.8em;font-weight:normal;">Add WE: </span>${guideText}</span>`;
-                trClass = 'refill-row';
-            } else if (!isInPeriod) {
+            const addWe = refillsToday * wePerTank;
+            if (refillsToday > 0) {
+                refillDaysAll.push(d);
+                if (isInPeriod) {
+                    refillDays.push(d);
+                    totalG += addWe;
+                }
+                if (isInPeriod || showFullPeriod) {
+                    const guideText = showUnits && pkgGrams > 0
+                        ? `${fmtPct(addWe / pkgGrams)} ${pkgName}`
+                        : `${fmt0(addWe)}g`;
+                    actionGuide = `<span class="guide-action">💧 <span style="font-size:0.8em;font-weight:normal;">Add WE: </span>${guideText}</span>`;
+                    trClass = 'refill-row';
+                } else {
+                    actionGuide = `<span style="color:#aaa;">Not applied</span>`;
+                }
+            } else if (!isInPeriod && !showFullPeriod) {
                 actionGuide = `<span style="color:#aaa;">Not applied</span>`;
             }
             body.innerHTML += `<tr class="${trClass}">
@@ -10446,7 +10455,7 @@ function calcPB() {
         }
     }
 
-    document.getElementById('resPbSchedule').innerHTML = formatDays(refillDays);
+    document.getElementById('resPbSchedule').innerHTML = formatDays(showFullPeriod ? refillDaysAll : refillDays);
     document.getElementById('dgStockPrepDays').innerHTML = refillDays.length > 0
         ? '<strong style="color:#2d8a4e;">Day ' + refillDays.join(', ') + '</strong>'
         : 'No refills required';
@@ -10465,12 +10474,15 @@ function calcPB() {
         const oneTankGuide = showUnits && pkgGrams > 0
             ? `${fmtPct(wePerTank / pkgGrams)} ${pkgName}(s)`
             : `${fmt0(wePerTank)}g`;
-        quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE when the tank is refilled during the selected period.`;
+        if (showFullPeriod) {
+            quickText = `* Full Period Application: <strong style="font-size:1.25em;">Day 1~${Math.min(days, 40)}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE at every tank refill throughout the entire grow-out period.`;
+        } else {
+            quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE when the tank is refilled during the selected period.`;
+        }
     }
     document.getElementById('quickActionText').innerHTML = quickText;
 
     /* ── Total dosage card (Water Tank mode only) ── */
-    const showFullPeriod = document.getElementById('pbDosageViewToggle')?.checked;
     const displayG = showFullPeriod ? totalGFull : totalG;
     const titleLabel = document.getElementById('resPbTotalTitle');
     const periodLabel = document.getElementById('resPbPeriodLabel');
