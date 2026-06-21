@@ -2014,7 +2014,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- SYO -->
       <div>
-        <div class="blk-title">Soybean Oil</div>
+        <div class="blk-title">Oil Ingredient</div>
         <div class="fld"><label>Inclusion</label><div class="inp-wrap"><input type="text" id="syo_l" value="14" oninput="lr_autoCalc()"><span class="u">L</span></div></div>
         <div class="fld"><label>AME</label><div class="inp-wrap"><input type="text" id="syo_ame" value="8,000" oninput="lr_autoCalc()"><span class="u">kcal/kg</span></div></div>
       </div>
@@ -2050,7 +2050,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
 
       <div>
-        <div class="blk-title">Soybean Oil</div>
+        <div class="blk-title">Oil Ingredient</div>
         <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="syo_price" value="1.10" oninput="lr_autoCalc()"><span class="u">/L</span></div></div>
       </div>
 
@@ -2097,7 +2097,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- B -->
       <div class="sc-card">
-        <div class="sc-title b" style="text-align:center">B : Soybean Oil<br>Reduction Only</div>
+        <div class="sc-title b" style="text-align:center">B : Oil Ingredient<br>Reduction Only</div>
         <div class="fld">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
             <label style="margin:0">Lipidol Inclusion</label>
@@ -2116,7 +2116,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <!-- C -->
       <div class="sc-card">
-        <div class="sc-title c" style="text-align:center">C : Both<br>Full Fat Soya + Soybean Oil</div>
+        <div class="sc-title c" style="text-align:center">C : Both<br>Full Fat Soya + Oil Ingredient</div>
         <div class="fld">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
             <label style="margin:0">Lipidol Inclusion</label>
@@ -2124,7 +2124,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="inp-wrap"><input type="text" id="sc_lip" value="1,000" oninput="lr_autoCalc()"><span class="u">g</span></div>
         </div>
-        <div class="fld"><label>Soybean Oil Reduction (set)</label><div class="inp-wrap"><input type="text" id="sc_syo_set" value="3" oninput="lr_autoCalc()"><span class="u">L</span></div></div>
+        <div class="fld"><label>Oil Ingredient Reduction (set)</label><div class="inp-wrap"><input type="text" id="sc_syo_set" value="3" oninput="lr_autoCalc()"><span class="u">L</span></div></div>
         <div class="auto-block">
           <div class="auto-row"><span class="auto-lbl">Full Fat Soya Reducible (auto)</span><span class="auto-val" id="sc_ffs_auto">—</span></div>
           <div class="auto-row"><span class="auto-lbl">Fat (%) — Estimated</span><span class="auto-val" id="sc_cf_auto">—</span></div>
@@ -11312,13 +11312,13 @@ function lr_renderSummary(d){
     {sign: sa.saving>=0?'+':'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(sa.saving,currency)},
   ]);
   injectBox('sum-b','#A85500',[
-    {sign:'−',label:'Soybean Oil',val:`${lr_fmt(sb.syo_red_l,2)} L`},
+    {sign:'−',label:'Oil Ingredient',val:`${lr_fmt(sb.syo_red_l,2)} L`},
     {sign:'+',label:'Lipidol',val:`${lr_fmtK(lr_v('sb_lip'))} g`},
     {sign: sb.saving>=0?'+':'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(sb.saving,currency)},
   ]);
   injectBox('sum-c','#B03020',[
     {sign:'−',label:'Full Fat Soya',val:`${lr_fmt(sc.ffs_red,1)} kg`},
-    {sign:'−',label:'Soybean Oil',val:`${lr_fmt(sc.syo_set,1)} L`},
+    {sign:'−',label:'Oil Ingredient',val:`${lr_fmt(sc.syo_set,1)} L`},
     {sign:'+',label:'Lipidol',val:`${lr_fmtK(lr_v('sc_lip'))} g`},
     {sign:'+',label:'Soybean Meal',val:`~${lr_fmt(sc.sbm,1)} kg`},
     {sign:'+',label:'Synthetic Lys / Met',val:'as needed'},
@@ -11333,7 +11333,7 @@ function lr_generateReport(){
   document.getElementById('rpt-sub').textContent=`${sp} · ${lr_fmtK(diet)} kg diet basis · Pathway Intermediates`;
 
   document.getElementById('tbl-baseline').innerHTML=`
-    <thead><tr><th style="width:28%">Item</th><th>Full Fat Soya</th><th>Soybean Oil</th><th>Lipidol</th></tr></thead>
+    <thead><tr><th style="width:28%">Item</th><th>Full Fat Soya</th><th>Oil Ingredient</th><th>Lipidol</th></tr></thead>
     <tbody>
       <tr><td class="td-lbl">Inclusion (per ton)</td><td>${lr_fmtK(ffs_kg)} kg (${lr_fmt(ffs_kg/diet*100,1)}%)</td><td>${lr_fmt(syo_l,1)} L (${lr_fmt(syo_l/diet*100,1)}%)</td><td>—</td></tr>
       <tr><td class="td-lbl">Energy (AME)</td><td>~${lr_fmtK(ffs_ame)} kcal/kg</td><td>${lr_fmtK(syo_ame)} kcal/kg</td><td>${lr_fmtK(lip_ame)} kcal/kg</td></tr>
@@ -11346,7 +11346,7 @@ function lr_generateReport(){
     <thead><tr>
       <th style="width:26%">Item</th>
       <th style="color:#88DDBB">A : Full Fat Soya</th>
-      <th style="color:#FFD980">B : Soybean Oil</th>
+      <th style="color:#FFD980">B : Oil Ingredient</th>
       <th style="color:#FFAAAA">C : Both</th>
     </tr></thead>
     <tbody>
@@ -11357,7 +11357,7 @@ function lr_generateReport(){
         <td>${lr_fmtK(ffs_kg)} → ${lr_fmt(ffs_kg-sc.ffs_red,1)} kg (−${lr_fmt(sc.ffs_red,1)} kg)</td>
       </tr>
       <tr>
-        <td class="td-lbl">Soybean Oil</td>
+        <td class="td-lbl">Oil Ingredient</td>
         <td>${lr_fmt(syo_l,1)} L (unchanged)</td>
         <td>${lr_fmt(syo_l,1)} → ${lr_fmt(syo_l-sb.syo_red_l,2)} L (−${lr_fmt(sb.syo_red_l,2)} L)</td>
         <td>${lr_fmt(syo_l,1)} → ${lr_fmt(syo_l-sc.syo_set,1)} L (−${lr_fmt(sc.syo_set,1)} L)</td>
