@@ -2039,6 +2039,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
+  <!-- ① b. Ingredient Cost -->
+  <div class="sec-head" style="margin-top:24px">Ingredient Cost</div>
+  <div class="card">
+    <div class="g4">
+
+      <div>
+        <div class="blk-title">Full Fat Soya</div>
+        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="ffs_price" value="0.60" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
+      </div>
+
+      <div>
+        <div class="blk-title">Soybean Oil</div>
+        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="syo_price" value="1.10" oninput="lr_autoCalc()"><span class="u">/L</span></div></div>
+      </div>
+
+      <div>
+        <div class="blk-title">Soybean Meal</div>
+        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="sbm_price" value="0.45" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
+      </div>
+
+      <div>
+        <div class="blk-title">Lipidol</div>
+        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="lip_price" value="8.00" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
+        <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border)">
+          <div class="blk-title">General</div>
+          <div class="fld"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:13px;background:var(--bg);"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- ② Scenarios -->
   <div class="sec-head" style="margin-top:24px">Scenario Settings</div>
   <div class="card">
@@ -11174,6 +11206,9 @@ function lr_calc(){
   const syo_kg=syo_l*SYO_D;
   const base_cf=ffs_kg*ffs_cf/100+syo_kg;
 
+  const ffs_price=lr_v('ffs_price'), syo_price=lr_v('syo_price'), sbm_price=lr_v('sbm_price'), lip_price=lr_v('lip_price');
+  const currency=(document.getElementById('lr_currency')||{}).value||'USD';
+
   // A: FFS reduction
   const sa_lip=lr_v('sa_lip')/1000;
   const sa_lip_ene=sa_lip*lip_ame;
@@ -11181,6 +11216,7 @@ function lr_calc(){
   const sa_cf_loss=sa_ffs_red*ffs_cf/100;
   const sa_cp_loss=sa_ffs_red*ffs_cp/100;
   const sa_sbm=sa_cp_loss/(sbm_cp/100);
+  const sa_saving=sa_ffs_red*ffs_price - sa_lip*lip_price - sa_sbm*sbm_price;
 
   // B: SYO reduction
   const sb_lip=lr_v('sb_lip')/1000;
@@ -11188,6 +11224,7 @@ function lr_calc(){
   const sb_syo_red_l=Math.min(sb_lip_ene/(syo_ame*SYO_D), syo_l);
   const sb_cf_loss=sb_syo_red_l*SYO_D;
   const sb_cp_loss=0;
+  const sb_saving=sb_syo_red_l*syo_price - sb_lip*lip_price;
 
   // C: Both
   const sc_lip=lr_v('sc_lip')/1000;
@@ -11198,15 +11235,17 @@ function lr_calc(){
   const sc_cf_loss=sc_ffs_red*ffs_cf/100+sc_syo_set*SYO_D;
   const sc_cp_loss=sc_ffs_red*ffs_cp/100;
   const sc_sbm=sc_cp_loss/(sbm_cp/100);
+  const sc_saving=sc_ffs_red*ffs_price + sc_syo_set*syo_price - sc_lip*lip_price - sc_sbm*sbm_price;
 
   return {
     ffs_kg,ffs_cf,ffs_cp,ffs_ame,
     syo_l,syo_kg,syo_ame,
     sbm_cp,lip_ame,diet,
+    ffs_price,syo_price,sbm_price,lip_price,currency,
     base_cf, base_cf_pct:base_cf/diet*100,
-    sa:{lip:lr_v('sa_lip'), ffs_red:sa_ffs_red, cf_loss:sa_cf_loss, cp_loss:sa_cp_loss, sbm:sa_sbm, cf_pct:(base_cf-sa_cf_loss)/diet*100},
-    sb:{lip:lr_v('sb_lip'), syo_red_l:sb_syo_red_l, cf_loss:sb_cf_loss, cp_loss:sb_cp_loss, cf_pct:(base_cf-sb_cf_loss)/diet*100},
-    sc:{lip:lr_v('sc_lip'), syo_set:sc_syo_set, ffs_red:sc_ffs_red, cf_loss:sc_cf_loss, cp_loss:sc_cp_loss, sbm:sc_sbm, cf_pct:(base_cf-sc_cf_loss)/diet*100}
+    sa:{lip:lr_v('sa_lip'), ffs_red:sa_ffs_red, cf_loss:sa_cf_loss, cp_loss:sa_cp_loss, sbm:sa_sbm, cf_pct:(base_cf-sa_cf_loss)/diet*100, saving:sa_saving},
+    sb:{lip:lr_v('sb_lip'), syo_red_l:sb_syo_red_l, cf_loss:sb_cf_loss, cp_loss:sb_cp_loss, cf_pct:(base_cf-sb_cf_loss)/diet*100, saving:sb_saving},
+    sc:{lip:lr_v('sc_lip'), syo_set:sc_syo_set, ffs_red:sc_ffs_red, cf_loss:sc_cf_loss, cp_loss:sc_cp_loss, sbm:sc_sbm, cf_pct:(base_cf-sc_cf_loss)/diet*100, saving:sc_saving}
   };
 }
 
@@ -11246,8 +11285,10 @@ function lr_autoCalc(){
   lr_renderSummary(d);
 }
 
+function lr_fmtMoney(n,cur){ return `${n<0?'-':''}${cur} ${lr_fmt(Math.abs(n),2)}`; }
+
 function lr_renderSummary(d){
-  const {sa,sb,sc}=d;
+  const {sa,sb,sc,currency,diet}=d;
 
   function rows(items){
     return items.map(r=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--border);">
@@ -11268,10 +11309,12 @@ function lr_renderSummary(d){
     {sign:'+',label:'Lipidol',val:`${lr_fmtK(lr_v('sa_lip'))} g`},
     {sign:'+',label:'Soybean Meal',val:`~${lr_fmt(sa.sbm,1)} kg`},
     {sign:'+',label:'Synthetic Lys / Met',val:'as needed'},
+    {sign: sa.saving>=0?'+':'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(sa.saving,currency)},
   ]);
   injectBox('sum-b','#A85500',[
     {sign:'−',label:'Soybean Oil',val:`${lr_fmt(sb.syo_red_l,2)} L`},
     {sign:'+',label:'Lipidol',val:`${lr_fmtK(lr_v('sb_lip'))} g`},
+    {sign: sb.saving>=0?'+':'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(sb.saving,currency)},
   ]);
   injectBox('sum-c','#B03020',[
     {sign:'−',label:'Full Fat Soya',val:`${lr_fmt(sc.ffs_red,1)} kg`},
@@ -11279,11 +11322,12 @@ function lr_renderSummary(d){
     {sign:'+',label:'Lipidol',val:`${lr_fmtK(lr_v('sc_lip'))} g`},
     {sign:'+',label:'Soybean Meal',val:`~${lr_fmt(sc.sbm,1)} kg`},
     {sign:'+',label:'Synthetic Lys / Met',val:'as needed'},
+    {sign: sc.saving>=0?'+':'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(sc.saving,currency)},
   ]);
 }
 
 function lr_generateReport(){
-  const d=lr_calc(); const {sa,sb,sc,ffs_kg,ffs_cf,ffs_cp,ffs_ame,syo_l,syo_kg,syo_ame,lip_ame,diet,base_cf,base_cf_pct}=d;
+  const d=lr_calc(); const {sa,sb,sc,ffs_kg,ffs_cf,ffs_cp,ffs_ame,syo_l,syo_kg,syo_ame,lip_ame,diet,base_cf,base_cf_pct,currency}=d;
   const sp=document.getElementById('species').value;
 
   document.getElementById('rpt-sub').textContent=`${sp} · ${lr_fmtK(diet)} kg diet basis · Pathway Intermediates`;
@@ -11348,6 +11392,12 @@ function lr_generateReport(){
         <td>—</td>
         <td>~${lr_fmt(sc.sbm,1)} kg + Synthetic Lys / Met</td>
       </tr>
+      <tr>
+        <td class="td-lbl">Cost Saving (per ${lr_fmtK(diet)} kg)</td>
+        <td><span class="badge ${sa.saving>=0?'b-green':'b-amber'}">${lr_fmtMoney(sa.saving,currency)}</span></td>
+        <td><span class="badge ${sb.saving>=0?'b-green':'b-amber'}">${lr_fmtMoney(sb.saving,currency)}</span></td>
+        <td><span class="badge ${sc.saving>=0?'b-green':'b-amber'}">${lr_fmtMoney(sc.saving,currency)}</span></td>
+      </tr>
 
     </tbody>`;
 
@@ -11356,7 +11406,7 @@ function lr_generateReport(){
 }
 
 window.onload=function(){
-  ['ffs_kg','ffs_ame','syo_l','syo_ame','lip_ame','diet_basis','sa_lip','sb_lip','sc_lip','sc_syo_set'].forEach(lr_setupCommaInput);
+  ['ffs_kg','ffs_ame','syo_l','syo_ame','lip_ame','diet_basis','sa_lip','sb_lip','sc_lip','sc_syo_set','ffs_price','syo_price','sbm_price','lip_price'].forEach(lr_setupCommaInput);
 };
 
 /* ── Add to Home Screen inline card logic ── */
