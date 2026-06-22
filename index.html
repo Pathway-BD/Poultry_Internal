@@ -723,14 +723,17 @@
   #tab6 .blk-title { font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
 
     /* Ingredient sections — vertical card layout (desktop: 2 per row) */
-  #tab6 .ing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  #tab6 .info-row { display: flex; align-items: stretch; gap: 20px; }
+  #tab6 .ing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex: 1; }
+  #tab6 .settings-col { flex: 0 0 260px; display: flex; flex-direction: column; gap: 14px; }
+  #tab6 .settings-col-head { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); }
+  #tab6 .settings-col .ing-card { flex: 1; }
   #tab6 .ing-card { background: #f4f9f7; border: 1px solid #d9e8e1; border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow); }
   #tab6 .ing-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
   #tab6 .ing-icon { font-size: 16px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
-  #tab6 .gen-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 18px; }
-  #tab6 .currency-card, #tab6 .diet-card { flex: 0 1 320px; padding-top: 14px; padding-bottom: 14px; }
-  #tab6 .diet-card .fld-h { align-items: center; flex-wrap: nowrap; }
-  #tab6 .diet-basis-control { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+  #tab6 .currency-card, #tab6 .diet-card { padding-top: 14px; padding-bottom: 14px; }
+  #tab6 .diet-card .fld-h { align-items: center; flex-wrap: wrap; }
+  #tab6 .diet-basis-control { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; flex: 0 0 auto; }
   #tab6 .unit-toggle { display: inline-flex; border: 1.5px solid var(--border); border-radius: 7px; overflow: hidden; flex-shrink: 0; }
   #tab6 .unit-btn { border: none; background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 700; padding: 6px 14px; cursor: pointer; transition: background 0.15s, color 0.15s; }
   #tab6 .unit-btn + .unit-btn { border-left: 1.5px solid var(--border); }
@@ -856,6 +859,8 @@
     @media (max-width: 900px) {
     #tab6 .g4 { grid-template-columns: 1fr 1fr; }
     #tab6 .ing-grid { grid-template-columns: 1fr; }
+    #tab6 .info-row { flex-direction: column; }
+    #tab6 .settings-col { flex: 1 1 auto; }
     #tab6 .hdr { padding: 14px 20px; }
     #tab6 .wrap { padding: 20px 16px 48px; }
     }
@@ -2055,6 +2060,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- ① Ingredient Info -->
   <div class="sec-head" style="margin-top:4px">Ingredient Information</div>
+  <div class="info-row">
   <div class="ing-grid">
 
     <!-- FFS -->
@@ -2121,8 +2127,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- ① b. General Settings -->
   <input type="hidden" id="species" value="Broiler (Ross 308)">
-  <div class="sec-head" style="margin-top:24px">General Settings</div>
-  <div class="gen-row">
+  <div class="settings-col">
+    <div class="settings-col-head">General Settings</div>
     <div class="ing-card currency-card">
       <div class="fld-h"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" class="plain-input"></div>
     </div>
@@ -2138,6 +2144,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <!-- ② Scenarios -->
