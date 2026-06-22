@@ -806,7 +806,7 @@
   #tab6 .b-green { background: var(--green-light); color: var(--green); }
   #tab6 .b-amber { background: var(--amber-light); color: var(--amber); }
   #tab6 .b-neutral { background: var(--bg); color: var(--muted); }
-  #tab6 .b-red { background: var(--red-light); color: var(--red); }
+  #tab6 .b-red { background: var(--red-light); color: var(--red); font-weight: 500; }
 
     /* Center alignment throughout the report */
   #tab6 .sec-head { justify-content: center; text-align: center; }
@@ -11401,7 +11401,7 @@ function lr_autoCalc(){
   lr_renderSummary(d);
 }
 
-function lr_fmtMoney(n,cur){ return `${n<0?'-':''}${cur} ${lr_fmt(Math.abs(n),2)}`; }
+function lr_fmtMoney(n,cur){ return `${cur} ${n<0?'- ':''}${lr_fmt(Math.abs(n),2)}`; }
 function lr_brParen(s){ return s.replace(/\s*(\([^)]*\))/, '<br>$1'); }
 
 function lr_breakevenNote(breakeven, currency){
@@ -11475,7 +11475,7 @@ function lr_generateReport(){
   document.getElementById('tbl-baseline').innerHTML=`
     <thead><tr><th style="width:28%">Item</th><th>Full Fat Soya</th><th>Oil Ingredient</th><th>Lipidol</th></tr></thead>
     <tbody>
-      <tr><td class="td-lbl">Inclusion (per ton)</td><td>${lr_brParen(`${lr_fmtK(ffs_kg)} kg (${lr_fmt(ffs_kg/diet*100,1)}%)`)}</td><td>${lr_brParen(`${lr_fmt(syo_l,1)} L (${lr_fmt(syo_l/diet*100,1)}%)`)}</td><td>—</td></tr>
+      <tr><td class="td-lbl">${lr_brParen('Inclusion (per ton)')}</td><td>${lr_brParen(`${lr_fmtK(ffs_kg)} kg (${lr_fmt(ffs_kg/diet*100,1)}%)`)}</td><td>${lr_brParen(`${lr_fmt(syo_l,1)} L (${lr_fmt(syo_l/diet*100,1)}%)`)}</td><td>—</td></tr>
       <tr><td class="td-lbl">Energy (AME)</td><td>~${lr_fmtK(ffs_ame)} kcal/kg</td><td>${lr_fmtK(syo_ame)} kcal/kg</td><td>${lr_fmtK(lip_ame)} kcal/kg</td></tr>
       <tr><td class="td-lbl">Crude Fat (Ether Extract)</td><td>${lr_brParen(`${lr_fmt(ffs_cf,2)}% (customer data)`)}</td><td>~100%</td><td>—</td></tr>
       <tr><td class="td-lbl">Crude Protein</td><td>${lr_fmt(ffs_cp,2)}%</td><td>—</td><td>—</td></tr>
@@ -11509,7 +11509,7 @@ function lr_generateReport(){
         <td><span class="badge b-amber">${lr_fmtK(sc.lip)} g</span></td>
       </tr>
       <tr>
-        <td class="td-lbl">Crude Fat Loss (per ton)</td>
+        <td class="td-lbl">${lr_brParen('Crude Fat Loss (per ton)')}</td>
         <td>${lr_brParen(`${lr_fmt(sa.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sa.cf_pct,2)}%p)`)}</td>
         <td>${lr_brParen(`${lr_fmt(sb.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sb.cf_pct,2)}%p)`)}</td>
         <td>${lr_brParen(`${lr_fmt(sc.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sc.cf_pct,2)}%p)`)}</td>
@@ -11521,7 +11521,7 @@ function lr_generateReport(){
         <td>${lr_fmt(base_cf_pct,2)}% → ~${lr_fmt(sc.cf_pct,2)}%</td>
       </tr>
       <tr>
-        <td class="td-lbl">Crude Protein Loss (per ton)</td>
+        <td class="td-lbl">${lr_brParen('Crude Protein Loss (per ton)')}</td>
         <td>${lr_fmt(sa.cp_loss,2)} kg</td>
         <td>None</td>
         <td>${lr_fmt(sc.cp_loss,2)} kg</td>
@@ -11533,7 +11533,7 @@ function lr_generateReport(){
         <td>~${lr_fmt(sc.sbm,1)} kg + Synthetic Lys / Met</td>
       </tr>
       <tr>
-        <td class="td-lbl">Net Cost Impact (per ${lr_fmtK(diet)} kg)</td>
+        <td class="td-lbl">${lr_brParen('Net Cost Impact (per ton)')}</td>
         <td>${lr_costBadge(sa.saving,currency,sa.breakeven_ffs_price)}</td>
         <td>${lr_costBadge(sb.saving,currency)}</td>
         <td>${lr_costBadge(sc.saving,currency)}</td>
