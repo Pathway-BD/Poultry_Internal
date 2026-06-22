@@ -731,14 +731,13 @@
   #tab6 .ing-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
   #tab6 .ing-icon { font-size: 16px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
   #tab6 .currency-card, #tab6 .diet-card { padding-top: 14px; padding-bottom: 14px; }
-  #tab6 .diet-card .fld-h { flex-direction: column; align-items: stretch; gap: 10px; }
-  #tab6 .diet-basis-control { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
-  #tab6 .unit-toggle { display: inline-flex; align-self: flex-start; border: 1.5px solid var(--border); border-radius: 7px; overflow: hidden; flex-shrink: 0; }
+  #tab6 .diet-card .fld-h.diet-basis-top { margin-bottom: 10px; }
+  #tab6 .unit-toggle { display: inline-flex; border: 1.5px solid var(--border); border-radius: 7px; overflow: hidden; flex-shrink: 0; }
   #tab6 .unit-btn { border: none; background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 700; padding: 6px 14px; cursor: pointer; transition: background 0.15s, color 0.15s; }
   #tab6 .unit-btn + .unit-btn { border-left: 1.5px solid var(--border); }
   #tab6 .unit-btn.active { background: var(--green-mid); color: white; }
-  #tab6 .diet-basis-control .inp-wrap { width: 100%; }
-  #tab6 .diet-basis-control .inp-wrap input { width: 100%; }
+  #tab6 .diet-basis-input { width: 100%; }
+  #tab6 .diet-basis-input input { width: 100%; }
   #tab6 .ing-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
 
     /* Label-left / input-right rows */
@@ -2133,16 +2132,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="fld-h"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" class="plain-input"></div>
     </div>
     <div class="ing-card diet-card">
-      <div class="fld-h">
+      <div class="fld-h diet-basis-top">
         <label>Diet Basis</label>
-        <div class="diet-basis-control">
-          <div class="unit-toggle">
-            <button type="button" class="unit-btn active" data-unit="kg" onclick="lr_setDietUnit('kg')">kg</button>
-            <button type="button" class="unit-btn" data-unit="%" onclick="lr_setDietUnit('%')">%</button>
-          </div>
-          <div class="inp-wrap"><input type="text" id="diet_basis" value="1,000" oninput="lr_autoCalc()"><span class="u" id="diet_basis_unit">kg</span></div>
+        <div class="unit-toggle">
+          <button type="button" class="unit-btn active" data-unit="kg" onclick="lr_setDietUnit('kg')">kg</button>
+          <button type="button" class="unit-btn" data-unit="%" onclick="lr_setDietUnit('%')">%</button>
         </div>
       </div>
+      <div class="inp-wrap diet-basis-input"><input type="text" id="diet_basis" value="1,000" oninput="lr_autoCalc()"><span class="u" id="diet_basis_unit">kg</span></div>
     </div>
   </div>
   </div>
