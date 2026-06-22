@@ -726,7 +726,8 @@
   #tab6 .ing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   #tab6 .ing-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow); }
   #tab6 .ing-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-  #tab6 .ing-icon { font-size: 17px; line-height: 1; }
+  #tab6 .ing-icon { font-size: 16px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
+  #tab6 .currency-card { max-width: 320px; }
   #tab6 .ing-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
 
     /* Label-left / input-right rows */
@@ -2111,15 +2112,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 
   <!-- ① b. General Settings -->
+  <input type="hidden" id="diet_basis" value="1,000">
+  <input type="hidden" id="species" value="Broiler (Ross 308)">
   <div class="sec-head" style="margin-top:24px">General Settings</div>
-  <div class="ing-grid gen-grid">
-    <div class="ing-card">
-      <div class="fld-h"><label>Diet Basis</label><div class="inp-wrap"><input type="text" id="diet_basis" value="1,000" oninput="lr_autoCalc()"><span class="u">kg</span></div></div>
-      <div class="fld-h"><label>Species / Breed</label><input type="text" id="species" value="Broiler (Ross 308)" class="plain-input"></div>
-    </div>
-    <div class="ing-card">
-      <div class="fld-h"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" class="plain-input"></div>
-    </div>
+  <div class="ing-card currency-card">
+    <div class="fld-h"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" class="plain-input"></div>
   </div>
 
   <!-- ② Scenarios -->
