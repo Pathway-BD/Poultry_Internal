@@ -11407,7 +11407,8 @@ function lr_brParen(s){ return s.replace(/\s*(\([^)]*\))/, '<br>$1'); }
 
 function lr_breakevenNote(breakeven, currency){
   if(breakeven==null || !isFinite(breakeven)) return '';
-  return `Becomes cost-positive once Full Fat Soya price reaches <strong>${currency} ${lr_fmt(breakeven,2)}/kg</strong>`;
+  const rounded=Math.ceil(breakeven*100)/100;
+  return `Becomes cost-positive once Full Fat Soya price reaches <strong>${currency} ${lr_fmt(rounded,2)}/kg</strong>`;
 }
 
 function lr_costBadge(saving, currency, breakeven){
