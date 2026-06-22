@@ -690,7 +690,7 @@
   #tab6 .hdr h1 { font-size: 15px; font-weight: 500; color: white; }
   #tab6 .hdr span { font-size: 12px; color: #777; display: block; margin-top: 1px; }
   
-  #tab6 .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 60px; }
+  #tab6 .wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 60px; }
   
     /* Section heading */
   #tab6 .sec-head { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
@@ -721,7 +721,38 @@
 
     /* Ingredient block title */
   #tab6 .blk-title { font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-  
+
+    /* Ingredient sections — vertical card layout (desktop: 2 per row) */
+  #tab6 .ing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  #tab6 .ing-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow); }
+  #tab6 .ing-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  #tab6 .ing-icon { font-size: 17px; line-height: 1; }
+  #tab6 .ing-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
+
+    /* Label-left / input-right rows */
+  #tab6 .fld-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 14px; margin-bottom: 14px; }
+  #tab6 .fld-h:last-child { margin-bottom: 0; }
+  #tab6 .fld-h > label { flex: 1 1 120px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+  #tab6 .fld-h .inp-wrap,
+  #tab6 .fld-h > input { flex: 1 1 160px; max-width: 220px; }
+  #tab6 .fld-h .inp-wrap input { width: 100%; }
+  #tab6 .plain-input { padding: 9px 11px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 500; color: var(--text); background: var(--surface); }
+  #tab6 .plain-input:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(39,158,106,0.1); }
+
+    /* Prominent (frequently edited) fields — Inclusion / Unit Price */
+  #tab6 .fld-h.prominent > label { font-size: 13px; font-weight: 700; color: var(--green); }
+  #tab6 .fld-h.prominent .inp-wrap input { font-size: 15px; font-weight: 700; padding: 10px 42px 10px 12px; border-width: 2px; }
+
+    /* Collapsible nutritional info */
+  #tab6 .nutri-collapse { margin-top: 8px; }
+  #tab6 .nutri-collapse summary { cursor: pointer; font-size: 11.5px; font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--muted); list-style: none; padding: 10px 0 0; display: flex; align-items: center; gap: 7px; border-top: 1px solid var(--border); margin-top: 8px; }
+  #tab6 .nutri-collapse summary::-webkit-details-marker { display: none; }
+  #tab6 .nutri-collapse summary::before { content: '▸'; font-size: 10px; color: var(--green); transition: transform 0.15s; }
+  #tab6 .nutri-collapse[open] summary::before { transform: rotate(90deg); }
+  #tab6 .nutri-body { padding-top: 14px; }
+  #tab6 .nutri-body .fld-h { margin-bottom: 12px; }
+  #tab6 .nutri-body .fld-h:last-child { margin-bottom: 0; }
+
     /* Scenario cards */
   #tab6 .sc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 4px; }
   #tab6 .sc-card { border-radius: var(--r); padding: 16px; border: 1px solid var(--border); background: var(--bg); }
@@ -815,6 +846,7 @@
     /* ── RESPONSIVE — Tablet ── */
     @media (max-width: 900px) {
     #tab6 .g4 { grid-template-columns: 1fr 1fr; }
+    #tab6 .ing-grid { grid-template-columns: 1fr; }
     #tab6 .hdr { padding: 14px 20px; }
     #tab6 .wrap { padding: 20px 16px 48px; }
     }
@@ -832,6 +864,9 @@
       /* Layout */
     #tab6 .wrap { padding: 12px 10px 36px; }
     #tab6 .card { padding: 14px 12px; }
+    #tab6 .ing-card { padding: 16px 14px; }
+    #tab6 .fld-h { flex-direction: column; align-items: stretch; }
+    #tab6 .fld-h .inp-wrap, #tab6 .fld-h > input, #tab6 .fld-h.prominent .inp-wrap { max-width: none; }
   
       /* Collapse multi-column grids to single column */
       .g2, .g3,
@@ -2011,74 +2046,79 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <!-- ① Ingredient Info -->
   <div class="sec-head" style="margin-top:4px">Ingredient Information</div>
-  <div class="card">
-    <div class="g4">
+  <div class="ing-grid">
 
-      <!-- FFS -->
-      <div>
-        <div class="blk-title">Full Fat Soya</div>
-        <div class="fld"><label>Inclusion</label><div class="inp-wrap"><input type="text" id="ffs_kg" value="120" oninput="lr_autoCalc()"><span class="u">kg</span></div></div>
-        <div class="fld"><label>Crude Fat (EE)</label><div class="inp-wrap"><input type="text" id="ffs_cf" value="17"><span class="u">%</span></div></div>
-        <div class="fld"><label>Crude Protein</label><div class="inp-wrap"><input type="text" id="ffs_cp" value="38.13"><span class="u">%</span></div></div>
-        <div class="fld"><label>AME</label><div class="inp-wrap"><input type="text" id="ffs_ame" value="3,200" oninput="lr_autoCalc()"><span class="u">kcal/kg</span></div></div>
-      </div>
+    <!-- FFS -->
+    <div class="ing-card">
+      <div class="ing-card-head"><span class="ing-icon">🌱</span><span class="ing-title">Full Fat Soya</span></div>
 
-      <!-- SYO -->
-      <div>
-        <div class="blk-title">Oil Ingredient</div>
-        <div class="fld"><label>Inclusion</label><div class="inp-wrap"><input type="text" id="syo_l" value="14" oninput="lr_autoCalc()"><span class="u">L</span></div></div>
-        <div class="fld"><label>AME</label><div class="inp-wrap"><input type="text" id="syo_ame" value="8,000" oninput="lr_autoCalc()"><span class="u">kcal/kg</span></div></div>
-      </div>
+      <div class="fld-h prominent"><label>Inclusion</label><div class="inp-wrap"><input type="text" id="ffs_kg" value="120" oninput="lr_autoCalc()"><span class="u">kg</span></div></div>
+      <div class="fld-h prominent"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="ffs_price" value="0.55" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
 
-      <!-- SBM -->
-      <div>
-        <div class="blk-title">Soybean Meal</div>
-        <div class="fld"><label>Crude Protein</label><div class="inp-wrap"><input type="text" id="sbm_cp" value="46.28"><span class="u">%</span></div></div>
-      </div>
-
-      <!-- Lipidol + Basis -->
-      <div>
-        <div class="blk-title">Lipidol</div>
-        <div class="fld"><label>AME</label><div class="inp-wrap"><input type="text" id="lip_ame" value="100,000" oninput="lr_autoCalc()"><span class="u">kcal/kg</span></div></div>
-        <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border)">
-          <div class="blk-title">General</div>
-          <div class="fld"><label>Diet Basis</label><div class="inp-wrap"><input type="text" id="diet_basis" value="1,000" oninput="lr_autoCalc()"><span class="u">kg</span></div></div>
-          <div class="fld"><label>Species / Breed</label><input type="text" id="species" value="Broiler (Ross 308)" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:13px;background:var(--bg);"></div>
+      <details class="nutri-collapse">
+        <summary>Nutritional Information</summary>
+        <div class="nutri-body">
+          <div class="fld-h"><label>Crude Fat (EE)</label><div class="inp-wrap"><input type="text" id="ffs_cf" value="17"><span class="u">%</span></div></div>
+          <div class="fld-h"><label>Crude Protein</label><div class="inp-wrap"><input type="text" id="ffs_cp" value="38.13"><span class="u">%</span></div></div>
+          <div class="fld-h"><label>AME</label><div class="inp-wrap"><input type="text" id="ffs_ame" value="3,200" oninput="lr_autoCalc()"><span class="u">kcal/kg</span></div></div>
         </div>
-      </div>
-
+      </details>
     </div>
+
+    <!-- SYO -->
+    <div class="ing-card">
+      <div class="ing-card-head"><span class="ing-icon">🛢️</span><span class="ing-title">Oil Ingredient</span></div>
+
+      <div class="fld-h prominent"><label>Inclusion</label><div class="inp-wrap"><input type="text" id="syo_l" value="14" oninput="lr_autoCalc()"><span class="u">L</span></div></div>
+      <div class="fld-h prominent"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="syo_price" value="1.40" oninput="lr_autoCalc()"><span class="u">/L</span></div></div>
+
+      <details class="nutri-collapse">
+        <summary>Nutritional Information</summary>
+        <div class="nutri-body">
+          <div class="fld-h"><label>AME</label><div class="inp-wrap"><input type="text" id="syo_ame" value="8,000" oninput="lr_autoCalc()"><span class="u">kcal/kg</span></div></div>
+        </div>
+      </details>
+    </div>
+
+    <!-- SBM -->
+    <div class="ing-card">
+      <div class="ing-card-head"><span class="ing-icon">🌾</span><span class="ing-title">Soybean Meal</span></div>
+
+      <div class="fld-h prominent"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="sbm_price" value="0.45" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
+
+      <details class="nutri-collapse">
+        <summary>Nutritional Information</summary>
+        <div class="nutri-body">
+          <div class="fld-h"><label>Crude Protein</label><div class="inp-wrap"><input type="text" id="sbm_cp" value="46.28"><span class="u">%</span></div></div>
+        </div>
+      </details>
+    </div>
+
+    <!-- Lipidol -->
+    <div class="ing-card">
+      <div class="ing-card-head"><span class="ing-icon">💧</span><span class="ing-title">Lipidol</span></div>
+
+      <div class="fld-h prominent"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="lip_price" value="7.00" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
+
+      <details class="nutri-collapse">
+        <summary>Nutritional Information</summary>
+        <div class="nutri-body">
+          <div class="fld-h"><label>AME</label><div class="inp-wrap"><input type="text" id="lip_ame" value="100,000" oninput="lr_autoCalc()"><span class="u">kcal/kg</span></div></div>
+        </div>
+      </details>
+    </div>
+
   </div>
 
-  <!-- ① b. Ingredient Cost -->
-  <div class="sec-head" style="margin-top:24px">Ingredient Cost</div>
-  <div class="card">
-    <div class="g4">
-
-      <div>
-        <div class="blk-title">Full Fat Soya</div>
-        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="ffs_price" value="0.55" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
-      </div>
-
-      <div>
-        <div class="blk-title">Oil Ingredient</div>
-        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="syo_price" value="1.40" oninput="lr_autoCalc()"><span class="u">/L</span></div></div>
-      </div>
-
-      <div>
-        <div class="blk-title">Soybean Meal</div>
-        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="sbm_price" value="0.45" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
-      </div>
-
-      <div>
-        <div class="blk-title">Lipidol</div>
-        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="lip_price" value="7.00" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
-        <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border)">
-          <div class="blk-title">General</div>
-          <div class="fld"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:13px;background:var(--bg);"></div>
-        </div>
-      </div>
-
+  <!-- ① b. General Settings -->
+  <div class="sec-head" style="margin-top:24px">General Settings</div>
+  <div class="ing-grid gen-grid">
+    <div class="ing-card">
+      <div class="fld-h"><label>Diet Basis</label><div class="inp-wrap"><input type="text" id="diet_basis" value="1,000" oninput="lr_autoCalc()"><span class="u">kg</span></div></div>
+      <div class="fld-h"><label>Species / Breed</label><input type="text" id="species" value="Broiler (Ross 308)" class="plain-input"></div>
+    </div>
+    <div class="ing-card">
+      <div class="fld-h"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" class="plain-input"></div>
     </div>
   </div>
 
