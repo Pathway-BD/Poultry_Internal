@@ -794,6 +794,7 @@
   
     /* Tables */
   #tab6 table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  #tab6 #tbl-baseline, #tab6 #tbl-scenario { table-layout: fixed; }
   #tab6 th { background: var(--text); color: white; padding: 9px 13px; text-align: center; font-weight: 500; font-size: 11px; }
   #tab6 th:first-child { border-radius: 8px 0 0 0; }
   #tab6 th:last-child { border-radius: 0 8px 0 0; }
@@ -11473,7 +11474,7 @@ function lr_generateReport(){
   document.getElementById('rpt-sub').textContent=`${sp} · ${lr_fmtK(diet)} kg diet basis · Pathway Intermediates`;
 
   document.getElementById('tbl-baseline').innerHTML=`
-    <thead><tr><th style="width:28%">Item</th><th>Full Fat Soya</th><th>Oil Ingredient</th><th>Lipidol</th></tr></thead>
+    <thead><tr><th style="width:25%">Item</th><th style="width:25%">Full Fat Soya</th><th style="width:25%">Oil Ingredient</th><th style="width:25%">Lipidol</th></tr></thead>
     <tbody>
       <tr><td class="td-lbl">${lr_brParen('Inclusion (per ton)')}</td><td>${lr_brParen(`${lr_fmtK(ffs_kg)} kg (${lr_fmt(ffs_kg/diet*100,1)}%)`)}</td><td>${lr_brParen(`${lr_fmt(syo_l,1)} L (${lr_fmt(syo_l/diet*100,1)}%)`)}</td><td>—</td></tr>
       <tr><td class="td-lbl">Energy (AME)</td><td>~${lr_fmtK(ffs_ame)} kcal/kg</td><td>${lr_fmtK(syo_ame)} kcal/kg</td><td>${lr_fmtK(lip_ame)} kcal/kg</td></tr>
@@ -11484,10 +11485,10 @@ function lr_generateReport(){
 
   document.getElementById('tbl-scenario').innerHTML=`
     <thead><tr>
-      <th style="width:26%">Item</th>
-      <th style="color:#88DDBB">A : Full Fat Soya</th>
-      <th style="color:#FFD980">B : Oil Ingredient</th>
-      <th style="color:#FFAAAA">C : Both</th>
+      <th style="width:25%">Item</th>
+      <th style="width:25%;color:#88DDBB">A : Full Fat Soya</th>
+      <th style="width:25%;color:#FFD980">B : Oil Ingredient</th>
+      <th style="width:25%;color:#FFAAAA">C : Both</th>
     </tr></thead>
     <tbody>
       <tr>
