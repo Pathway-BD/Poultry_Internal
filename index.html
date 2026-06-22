@@ -806,6 +806,7 @@
   #tab6 .b-green { background: var(--green-light); color: var(--green); }
   #tab6 .b-amber { background: var(--amber-light); color: var(--amber); }
   #tab6 .b-neutral { background: var(--bg); color: var(--muted); }
+  #tab6 .b-red { background: var(--red-light); color: var(--red); }
 
     /* Center alignment throughout the report */
   #tab6 .sec-head { justify-content: center; text-align: center; }
@@ -11405,14 +11406,14 @@ function lr_brParen(s){ return s.replace(/\s*(\([^)]*\))/, '<br>$1'); }
 
 function lr_breakevenNote(breakeven, currency){
   if(breakeven==null || !isFinite(breakeven)) return '';
-  return `Becomes cost-positive once Full Fat Soya price reaches ${currency} ${lr_fmt(breakeven,2)}/kg`;
+  return `Becomes cost-positive once Full Fat Soya price reaches <strong>${currency} ${lr_fmt(breakeven,2)}/kg</strong>`;
 }
 
 function lr_costBadge(saving, currency, breakeven){
   if(saving>=0) return `<span class="badge b-green">${lr_fmtMoney(saving,currency)}</span>`;
   const note=lr_breakevenNote(breakeven, currency);
   const sub=note ? `<div style="font-size:10px;font-weight:500;color:var(--muted);margin-top:4px;">${note}</div>` : '';
-  return `<span class="badge b-neutral">Growth Performance Support</span>${sub}`;
+  return `<span class="badge b-red">${lr_fmtMoney(saving,currency)}</span>${sub}`;
 }
 
 function lr_costRow(saving, diet, currency, breakeven){
@@ -11420,7 +11421,7 @@ function lr_costRow(saving, diet, currency, breakeven){
     return {sign:'+', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(saving,currency)};
   }
   const note=lr_breakevenNote(breakeven, currency);
-  return {sign:'', neutral:true, label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:'Growth Performance Support', note};
+  return {sign:'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(saving,currency), note};
 }
 
 function lr_renderSummary(d){
