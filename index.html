@@ -731,13 +731,6 @@
   #tab6 .ing-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
   #tab6 .ing-icon { font-size: 16px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
   #tab6 .currency-card, #tab6 .diet-card { padding-top: 14px; padding-bottom: 14px; }
-  #tab6 .diet-card .fld-h.diet-basis-top { margin-bottom: 10px; }
-  #tab6 .unit-toggle { display: inline-flex; border: 1.5px solid var(--border); border-radius: 7px; overflow: hidden; flex-shrink: 0; }
-  #tab6 .unit-btn { border: none; background: var(--surface); color: var(--muted); font-size: 12px; font-weight: 700; padding: 6px 14px; cursor: pointer; transition: background 0.15s, color 0.15s; }
-  #tab6 .unit-btn + .unit-btn { border-left: 1.5px solid var(--border); }
-  #tab6 .unit-btn.active { background: var(--green-mid); color: white; }
-  #tab6 .diet-basis-input { width: 100%; }
-  #tab6 .diet-basis-input input { width: 100%; }
   #tab6 .ing-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
 
     /* Label-left / input-right rows */
@@ -804,6 +797,7 @@
   #tab6 .badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 600; font-family: 'Courier New', Courier, monospace; }
   #tab6 .b-green { background: var(--green-light); color: var(--green); }
   #tab6 .b-amber { background: var(--amber-light); color: var(--amber); }
+  #tab6 .b-neutral { background: var(--bg); color: var(--muted); }
   
     /* Note boxes */
   #tab6 .note { border-radius: 8px; padding: 11px 14px; font-size: 12px; margin-top: 12px; line-height: 1.65; }
@@ -2132,14 +2126,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="fld-h"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" class="plain-input"></div>
     </div>
     <div class="ing-card diet-card">
-      <div class="fld-h diet-basis-top">
-        <label>Diet Basis</label>
-        <div class="unit-toggle">
-          <button type="button" class="unit-btn active" data-unit="kg" onclick="lr_setDietUnit('kg')">kg</button>
-          <button type="button" class="unit-btn" data-unit="%" onclick="lr_setDietUnit('%')">%</button>
-        </div>
-      </div>
-      <div class="inp-wrap diet-basis-input"><input type="text" id="diet_basis" value="1,000" oninput="lr_autoCalc()"><span class="u" id="diet_basis_unit">kg</span></div>
+      <div class="fld-h"><label>Diet Basis</label><div class="inp-wrap"><input type="text" id="diet_basis" value="1,000" oninput="lr_autoCalc()"><span class="u">kg</span></div></div>
     </div>
   </div>
   </div>
@@ -11270,16 +11257,6 @@ function lr_setupCommaInput(id){
   });
 }
 
-function lr_setDietUnit(unit){
-  document.querySelectorAll('.unit-btn').forEach(b=>b.classList.toggle('active', b.dataset.unit===unit));
-  const inp=document.getElementById('diet_basis');
-  const u=document.getElementById('diet_basis_unit');
-  if(!inp||!u) return;
-  if(unit==='kg'){ inp.value='1,000'; u.textContent='kg'; }
-  else { inp.value='100'; u.textContent='%'; }
-  lr_autoCalc();
-}
-
 function lr_calc(){
   const ffs_kg=lr_v('ffs_kg'), ffs_cf=lr_v('ffs_cf'), ffs_cp=lr_v('ffs_cp'), ffs_ame=lr_v('ffs_ame');
   const syo_l=lr_v('syo_l'), syo_ame=lr_v('syo_ame');
@@ -11370,14 +11347,26 @@ function lr_autoCalc(){
 
 function lr_fmtMoney(n,cur){ return `${n<0?'-':''}${cur} ${lr_fmt(Math.abs(n),2)}`; }
 
+function lr_costBadge(saving, currency){
+  if(saving>=0) return `<span class="badge b-green">${lr_fmtMoney(saving,currency)}</span>`;
+  return `<span class="badge b-neutral">${currency} ${lr_fmt(Math.abs(saving),2)} (Additional Cost)</span>`;
+}
+
+function lr_costRow(saving, diet, currency){
+  if(saving>=0){
+    return {sign:'+', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(saving,currency)};
+  }
+  return {sign:'•', neutral:true, label:`Additional Cost / ${lr_fmtK(diet)}kg`, val:`${currency} ${lr_fmt(Math.abs(saving),2)}`};
+}
+
 function lr_renderSummary(d){
   const {sa,sb,sc,currency,diet}=d;
 
   function rows(items){
     return items.map(r=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--border);">
-      <span style="font-size:13px;font-weight:700;color:${r.sign==='+' ? '#1A6B47':'#B03020'};width:16px;flex-shrink:0;">${r.sign}</span>
+      <span style="font-size:13px;font-weight:700;color:${r.neutral ? 'var(--muted)' : (r.sign==='+' ? '#1A6B47':'#B03020')};width:16px;flex-shrink:0;">${r.sign}</span>
       <span style="color:var(--muted);flex:1;">${r.label}</span>
-      <span style="font-family:'Courier New', Courier, monospace;font-weight:500;">${r.val}</span>
+      <span style="font-family:'Courier New', Courier, monospace;font-weight:500;${r.neutral ? 'color:var(--muted);':''}">${r.val}</span>
     </div>`).join('');
   }
 
@@ -11392,12 +11381,12 @@ function lr_renderSummary(d){
     {sign:'+',label:'Lipidol',val:`${lr_fmtK(lr_v('sa_lip'))} g`},
     {sign:'+',label:'Soybean Meal',val:`~${lr_fmt(sa.sbm,1)} kg`},
     {sign:'+',label:'Synthetic Lys / Met',val:'as needed'},
-    {sign: sa.saving>=0?'+':'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(sa.saving,currency)},
+    lr_costRow(sa.saving, diet, currency),
   ]);
   injectBox('sum-b','#A85500',[
     {sign:'−',label:'Oil Ingredient',val:`${lr_fmt(sb.syo_red_l,2)} L`},
     {sign:'+',label:'Lipidol',val:`${lr_fmtK(lr_v('sb_lip'))} g`},
-    {sign: sb.saving>=0?'+':'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(sb.saving,currency)},
+    lr_costRow(sb.saving, diet, currency),
   ]);
   injectBox('sum-c','#B03020',[
     {sign:'−',label:'Full Fat Soya',val:`${lr_fmt(sc.ffs_red,1)} kg`},
@@ -11405,7 +11394,7 @@ function lr_renderSummary(d){
     {sign:'+',label:'Lipidol',val:`${lr_fmtK(lr_v('sc_lip'))} g`},
     {sign:'+',label:'Soybean Meal',val:`~${lr_fmt(sc.sbm,1)} kg`},
     {sign:'+',label:'Synthetic Lys / Met',val:'as needed'},
-    {sign: sc.saving>=0?'+':'−', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(sc.saving,currency)},
+    lr_costRow(sc.saving, diet, currency),
   ]);
 }
 
@@ -11476,10 +11465,10 @@ function lr_generateReport(){
         <td>~${lr_fmt(sc.sbm,1)} kg + Synthetic Lys / Met</td>
       </tr>
       <tr>
-        <td class="td-lbl">Cost Saving (per ${lr_fmtK(diet)} kg)</td>
-        <td><span class="badge ${sa.saving>=0?'b-green':'b-amber'}">${lr_fmtMoney(sa.saving,currency)}</span></td>
-        <td><span class="badge ${sb.saving>=0?'b-green':'b-amber'}">${lr_fmtMoney(sb.saving,currency)}</span></td>
-        <td><span class="badge ${sc.saving>=0?'b-green':'b-amber'}">${lr_fmtMoney(sc.saving,currency)}</span></td>
+        <td class="td-lbl">Net Cost Impact (per ${lr_fmtK(diet)} kg)</td>
+        <td>${lr_costBadge(sa.saving,currency)}</td>
+        <td>${lr_costBadge(sb.saving,currency)}</td>
+        <td>${lr_costBadge(sc.saving,currency)}</td>
       </tr>
 
     </tbody>`;
