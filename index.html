@@ -11346,17 +11346,18 @@ function lr_autoCalc(){
 }
 
 function lr_fmtMoney(n,cur){ return `${n<0?'-':''}${cur} ${lr_fmt(Math.abs(n),2)}`; }
+function lr_brParen(s){ return s.replace(/\s*(\([^)]*\))/, '<br>$1'); }
 
 function lr_costBadge(saving, currency){
   if(saving>=0) return `<span class="badge b-green">${lr_fmtMoney(saving,currency)}</span>`;
-  return `<span class="badge b-neutral">${currency} ${lr_fmt(Math.abs(saving),2)} (Additional Cost)</span>`;
+  return `<span class="badge b-neutral">Growth Performance Support</span>`;
 }
 
 function lr_costRow(saving, diet, currency){
   if(saving>=0){
     return {sign:'+', label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:lr_fmtMoney(saving,currency)};
   }
-  return {sign:'•', neutral:true, label:`Additional Cost / ${lr_fmtK(diet)}kg`, val:`${currency} ${lr_fmt(Math.abs(saving),2)}`};
+  return {sign:'', neutral:true, label:`Cost Saving / ${lr_fmtK(diet)}kg`, val:'Growth Performance Support'};
 }
 
 function lr_renderSummary(d){
@@ -11407,9 +11408,9 @@ function lr_generateReport(){
   document.getElementById('tbl-baseline').innerHTML=`
     <thead><tr><th style="width:28%">Item</th><th>Full Fat Soya</th><th>Oil Ingredient</th><th>Lipidol</th></tr></thead>
     <tbody>
-      <tr><td class="td-lbl">Inclusion (per ton)</td><td>${lr_fmtK(ffs_kg)} kg (${lr_fmt(ffs_kg/diet*100,1)}%)</td><td>${lr_fmt(syo_l,1)} L (${lr_fmt(syo_l/diet*100,1)}%)</td><td>—</td></tr>
+      <tr><td class="td-lbl">Inclusion (per ton)</td><td>${lr_brParen(`${lr_fmtK(ffs_kg)} kg (${lr_fmt(ffs_kg/diet*100,1)}%)`)}</td><td>${lr_brParen(`${lr_fmt(syo_l,1)} L (${lr_fmt(syo_l/diet*100,1)}%)`)}</td><td>—</td></tr>
       <tr><td class="td-lbl">Energy (AME)</td><td>~${lr_fmtK(ffs_ame)} kcal/kg</td><td>${lr_fmtK(syo_ame)} kcal/kg</td><td>${lr_fmtK(lip_ame)} kcal/kg</td></tr>
-      <tr><td class="td-lbl">Crude Fat (Ether Extract)</td><td>${lr_fmt(ffs_cf,2)}% (customer data)</td><td>~100%</td><td>—</td></tr>
+      <tr><td class="td-lbl">Crude Fat (Ether Extract)</td><td>${lr_brParen(`${lr_fmt(ffs_cf,2)}% (customer data)`)}</td><td>~100%</td><td>—</td></tr>
       <tr><td class="td-lbl">Crude Protein</td><td>${lr_fmt(ffs_cp,2)}%</td><td>—</td><td>—</td></tr>
       <tr><td class="td-lbl">Total Energy in Diet</td><td>${lr_fmtK(ffs_kg*ffs_ame)} kcal</td><td>${lr_fmtK(syo_kg*syo_ame)} kcal</td><td>—</td></tr>
     </tbody>`;
@@ -11424,15 +11425,15 @@ function lr_generateReport(){
     <tbody>
       <tr>
         <td class="td-lbl">Full Fat Soya</td>
-        <td>${lr_fmtK(ffs_kg)} → ${lr_fmt(ffs_kg-sa.ffs_red,1)} kg (−${lr_fmt(sa.ffs_red,1)} kg)</td>
-        <td>${lr_fmtK(ffs_kg)} kg (unchanged)</td>
-        <td>${lr_fmtK(ffs_kg)} → ${lr_fmt(ffs_kg-sc.ffs_red,1)} kg (−${lr_fmt(sc.ffs_red,1)} kg)</td>
+        <td>${lr_brParen(`${lr_fmtK(ffs_kg)} → ${lr_fmt(ffs_kg-sa.ffs_red,1)} kg (−${lr_fmt(sa.ffs_red,1)} kg)`)}</td>
+        <td>${lr_brParen(`${lr_fmtK(ffs_kg)} kg (unchanged)`)}</td>
+        <td>${lr_brParen(`${lr_fmtK(ffs_kg)} → ${lr_fmt(ffs_kg-sc.ffs_red,1)} kg (−${lr_fmt(sc.ffs_red,1)} kg)`)}</td>
       </tr>
       <tr>
         <td class="td-lbl">Oil Ingredient</td>
-        <td>${lr_fmt(syo_l,1)} L (unchanged)</td>
-        <td>${lr_fmt(syo_l,1)} → ${lr_fmt(syo_l-sb.syo_red_l,2)} L (−${lr_fmt(sb.syo_red_l,2)} L)</td>
-        <td>${lr_fmt(syo_l,1)} → ${lr_fmt(syo_l-sc.syo_set,1)} L (−${lr_fmt(sc.syo_set,1)} L)</td>
+        <td>${lr_brParen(`${lr_fmt(syo_l,1)} L (unchanged)`)}</td>
+        <td>${lr_brParen(`${lr_fmt(syo_l,1)} → ${lr_fmt(syo_l-sb.syo_red_l,2)} L (−${lr_fmt(sb.syo_red_l,2)} L)`)}</td>
+        <td>${lr_brParen(`${lr_fmt(syo_l,1)} → ${lr_fmt(syo_l-sc.syo_set,1)} L (−${lr_fmt(sc.syo_set,1)} L)`)}</td>
       </tr>
       <tr>
         <td class="td-lbl">Lipidol Inclusion</td>
@@ -11442,9 +11443,9 @@ function lr_generateReport(){
       </tr>
       <tr>
         <td class="td-lbl">Crude Fat Loss (per ton)</td>
-        <td>${lr_fmt(sa.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sa.cf_pct,2)}%p)</td>
-        <td>${lr_fmt(sb.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sb.cf_pct,2)}%p)</td>
-        <td>${lr_fmt(sc.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sc.cf_pct,2)}%p)</td>
+        <td>${lr_brParen(`${lr_fmt(sa.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sa.cf_pct,2)}%p)`)}</td>
+        <td>${lr_brParen(`${lr_fmt(sb.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sb.cf_pct,2)}%p)`)}</td>
+        <td>${lr_brParen(`${lr_fmt(sc.cf_loss,2)} kg (−${lr_fmt(base_cf_pct-sc.cf_pct,2)}%p)`)}</td>
       </tr>
       <tr>
         <td class="td-lbl">Fat (%) — Estimated</td>
