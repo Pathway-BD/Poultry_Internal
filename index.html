@@ -673,6 +673,7 @@
     /* OFFLINE: Google Fonts @import removed, using system font fallbacks */
 
   #tab6 {
+    font-family: Arial, sans-serif;
     --muted: #586174;
     --green-mid: #1a9a5a;
     --green-light: #e3f6ea;
@@ -686,7 +687,7 @@
 
     /* Header */
   #tab6 .hdr { background: var(--text); padding: 18px 36px; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; }
-  #tab6 .hdr-logo { width: 34px; height: 34px; background: var(--green-mid); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', Courier, monospace; font-size: 15px; font-weight: 500; color: white; }
+  #tab6 .hdr-logo { width: 34px; height: 34px; background: var(--green-mid); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: Arial, sans-serif; font-size: 15px; font-weight: 500; color: white; }
   #tab6 .hdr h1 { font-size: 15px; font-weight: 500; color: white; }
   #tab6 .hdr span { font-size: 12px; color: #777; display: block; margin-top: 1px; }
   
@@ -711,11 +712,11 @@
   #tab6 .fld:last-child { margin-bottom: 0; }
   #tab6 .fld label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
   #tab6 .inp-wrap { position: relative; }
-  #tab6 .inp-wrap input { width: 100%; padding: 9px 40px 9px 11px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: 600; color: var(--text); background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; -moz-appearance: textfield; }
+  #tab6 .inp-wrap input { width: 100%; padding: 9px 40px 9px 11px; border: 1.5px solid var(--border); border-radius: 7px; font-family: Arial, sans-serif; font-size: 14px; font-weight: 600; color: var(--text); background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; -moz-appearance: textfield; }
   #tab6 .inp-wrap input::-webkit-outer-spin-button,
   #tab6 .inp-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; }
   #tab6 .inp-wrap input:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(39,158,106,0.1); background: white; }
-  #tab6 .inp-wrap .u { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: var(--muted); pointer-events: none; font-family: 'Courier New', Courier, monospace; }
+  #tab6 .inp-wrap .u { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: var(--muted); pointer-events: none; font-family: Arial, sans-serif; }
   #tab6 .fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   #tab6 .fld-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 
@@ -729,7 +730,8 @@
   #tab6 .settings-col-head { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); }
   #tab6 .ing-card { background: #f4f9f7; border: 1px solid #d9e8e1; border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow); }
   #tab6 .ing-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
-  #tab6 .ing-icon { font-size: 16px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; }
+  #tab6 .ing-icon { font-size: 16px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--green-light); flex-shrink: 0; overflow: hidden; }
+  #tab6 .ing-icon img { width: 18px; height: 18px; object-fit: contain; }
   #tab6 .currency-card, #tab6 .diet-card { padding-top: 14px; padding-bottom: 14px; }
   #tab6 .ing-title { font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 0.01em; }
 
@@ -740,7 +742,7 @@
   #tab6 .fld-h .inp-wrap,
   #tab6 .fld-h > input { flex: 1 1 160px; max-width: 220px; }
   #tab6 .fld-h .inp-wrap input { width: 100%; }
-  #tab6 .plain-input { padding: 9px 11px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Outfit', sans-serif; font-size: 13.5px; font-weight: 500; color: var(--text); background: var(--surface); }
+  #tab6 .plain-input { padding: 9px 11px; border: 1.5px solid var(--border); border-radius: 7px; font-family: Arial, sans-serif; font-size: 13.5px; font-weight: 500; color: var(--text); background: var(--surface); }
   #tab6 .plain-input:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(39,158,106,0.1); }
 
     /* Prominent (frequently edited) fields — Inclusion / Unit Price */
@@ -768,10 +770,10 @@
   #tab6 .auto-block { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; }
   #tab6 .auto-row { display: flex; justify-content: space-between; align-items: baseline; }
   #tab6 .auto-lbl { font-size: 11px; color: var(--muted); }
-  #tab6 .auto-val { font-size: 12px; font-weight: 500; font-family: 'Courier New', Courier, monospace; color: var(--text); }
+  #tab6 .auto-val { font-size: 12px; font-weight: 500; font-family: Arial, sans-serif; color: var(--text); }
   
     /* Generate button */
-  #tab6 .btn-gen { width: 100%; padding: 14px; background: var(--text); color: white; border: none; border-radius: var(--r); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 20px; letter-spacing: 0.01em; transition: opacity 0.15s, transform 0.1s; }
+  #tab6 .btn-gen { width: 100%; padding: 14px; background: var(--text); color: white; border: none; border-radius: var(--r); font-family: Arial, sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 20px; letter-spacing: 0.01em; transition: opacity 0.15s, transform 0.1s; }
   #tab6 .btn-gen:hover { opacity: 0.88; }
   #tab6 .btn-gen:active { transform: scale(0.995); }
   
@@ -781,24 +783,38 @@
   #tab6 .rpt-hdr { background: var(--text); border-radius: var(--r); padding: 24px 28px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
   #tab6 .rpt-hdr h2 { font-size: 19px; font-weight: 500; color: white; letter-spacing: -0.02em; margin-bottom: 3px; }
   #tab6 .rpt-hdr p { font-size: 11px; color: #777; }
-  #tab6 .btn-print { padding: 9px 18px; background: var(--green); color: white; border: none; border-radius: 7px; font-family: system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; }
+  #tab6 .btn-print { padding: 9px 18px; background: var(--green); color: white; border: none; border-radius: 7px; font-family: Arial, sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; }
   #tab6 .btn-print:hover { background: var(--green-mid); }
   
     /* Tables */
   #tab6 table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-  #tab6 th { background: var(--text); color: white; padding: 9px 13px; text-align: left; font-weight: 500; font-size: 11px; }
+  #tab6 th { background: var(--text); color: white; padding: 9px 13px; text-align: center; font-weight: 500; font-size: 11px; }
   #tab6 th:first-child { border-radius: 8px 0 0 0; }
   #tab6 th:last-child { border-radius: 0 8px 0 0; }
-  #tab6 td { padding: 9px 13px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+  #tab6 td { padding: 9px 13px; border-bottom: 1px solid var(--border); vertical-align: middle; line-height: 1.5; text-align: center; }
   #tab6 tr:last-child td { border-bottom: none; }
   #tab6 tr:nth-child(even) td { background: var(--bg); }
   #tab6 .td-lbl { font-weight: 500; color: var(--muted); font-size: 11.5px; }
   
-  #tab6 .badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 13px; font-weight: 800; font-family: 'Courier New', Courier, monospace; }
+  #tab6 .badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 13px; font-weight: 800; font-family: Arial, sans-serif; }
   #tab6 .b-green { background: var(--green-light); color: var(--green); }
   #tab6 .b-amber { background: var(--amber-light); color: var(--amber); }
   #tab6 .b-neutral { background: var(--bg); color: var(--muted); }
-  
+
+    /* Center alignment throughout the report */
+  #tab6 .sec-head { justify-content: center; text-align: center; }
+  #tab6 .ing-card-head { justify-content: center; text-align: center; }
+  #tab6 .fld label,
+  #tab6 .fld-h > label,
+  #tab6 .auto-row,
+  #tab6 .auto-lbl,
+  #tab6 .blk-title,
+  #tab6 .settings-col-head,
+  #tab6 .rpt-hdr h2,
+  #tab6 .rpt-hdr p,
+  #tab6 .disclaimer { text-align: center; }
+  #tab6 .rpt-hdr { flex-direction: column; align-items: center; gap: 10px; }
+
     /* Note boxes */
   #tab6 .note { border-radius: 8px; padding: 11px 14px; font-size: 12px; margin-top: 12px; line-height: 1.65; }
   #tab6 .note.green { background: var(--green-light); color: var(--green); border-left: 3px solid var(--green-mid); }
@@ -816,7 +832,7 @@
   #tab6 .cbox.a .clbl { color: var(--green); }
   #tab6 .cbox.b .clbl { color: var(--amber); }
   #tab6 .cbox.c .clbl { color: var(--red); }
-  #tab6 .cbox .cval { font-size: 20px; font-weight: 600; font-family: 'Courier New', Courier, monospace; }
+  #tab6 .cbox .cval { font-size: 20px; font-weight: 600; font-family: Arial, sans-serif; }
   #tab6 .cbox.a .cval { color: var(--green); }
   #tab6 .cbox.b .cval { color: var(--amber); }
   #tab6 .cbox.c .cval { color: var(--red); }
@@ -824,14 +840,14 @@
   
   #tab6 .eff-bar { background: var(--text); color: white; border-radius: var(--r); padding: 14px 18px; margin-top: 14px; display: flex; align-items: center; gap: 14px; }
   #tab6 .eff-bar .et { font-size: 10px; color: #888; white-space: nowrap; }
-  #tab6 .eff-bar .ee { font-family: 'Courier New', Courier, monospace; font-size: 13px; font-weight: 500; }
+  #tab6 .eff-bar .ee { font-family: Arial, sans-serif; font-size: 13px; font-weight: 500; }
   
     /* Rec */
   #tab6 .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
   #tab6 .rec-box { border-radius: var(--r); padding: 16px; border: 1px solid var(--border); }
   #tab6 .rec-box h4 { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; margin-bottom: 7px; }
   #tab6 .rec-box p { font-size: 12px; color: var(--muted); line-height: 1.65; }
-  #tab6 .rec-box .reff { font-size: 12px; font-weight: 600; margin-top: 8px; font-family: 'Courier New', Courier, monospace; }
+  #tab6 .rec-box .reff { font-size: 12px; font-weight: 600; margin-top: 8px; font-family: Arial, sans-serif; }
   
     /* Disclaimer */
   #tab6 .disclaimer { margin-top: 20px; border-radius: var(--r); padding: 14px 18px; background: #F5F3EE; border: 1px solid var(--border); font-size: 11.5px; color: var(--muted); line-height: 1.7; }
@@ -2104,7 +2120,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Lipidol -->
     <div class="ing-card">
-      <div class="ing-card-head"><span class="ing-icon">💧</span><span class="ing-title">Lipidol</span></div>
+      <div class="ing-card-head"><span class="ing-icon"><img src="Lipidol Symbol.png" alt="Lipidol" style="width:18px;height:18px;object-fit:contain;"></span><span class="ing-title">Lipidol</span></div>
 
       <div class="fld-h prominent"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="lip_price" value="7.00" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
 
@@ -2142,7 +2158,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="fld">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
             <label style="margin:0">Lipidol Inclusion</label>
-            <span id="sa_mv_badge" style="font-size:10px;font-weight:600;color:var(--green);font-family:'JetBrains Mono',monospace;">M.V —</span>
+            <span id="sa_mv_badge" style="font-size:10px;font-weight:600;color:var(--green);font-family: Arial, sans-serif;">M.V —</span>
           </div>
           <div class="inp-wrap"><input type="text" id="sa_lip" value="500" oninput="lr_autoCalc()"><span class="u">g</span></div>
         </div>
@@ -2161,7 +2177,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="fld">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
             <label style="margin:0">Lipidol Inclusion</label>
-            <span id="sb_mv_badge" style="font-size:10px;font-weight:600;color:var(--amber);font-family:'JetBrains Mono',monospace;">M.V —</span>
+            <span id="sb_mv_badge" style="font-size:10px;font-weight:600;color:var(--amber);font-family: Arial, sans-serif;">M.V —</span>
           </div>
           <div class="inp-wrap"><input type="text" id="sb_lip" value="500" oninput="lr_autoCalc()"><span class="u">g</span></div>
         </div>
@@ -2180,7 +2196,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="fld">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
             <label style="margin:0">Lipidol Inclusion</label>
-            <span id="sc_mv_badge" style="font-size:10px;font-weight:600;color:var(--red);font-family:'JetBrains Mono',monospace;">M.V —</span>
+            <span id="sc_mv_badge" style="font-size:10px;font-weight:600;color:var(--red);font-family: Arial, sans-serif;">M.V —</span>
           </div>
           <div class="inp-wrap"><input type="text" id="sc_lip" value="500" oninput="lr_autoCalc()"><span class="u">g</span></div>
         </div>
@@ -11367,7 +11383,7 @@ function lr_renderSummary(d){
     return items.map(r=>`<div style="display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--border);">
       <span style="font-size:13px;font-weight:700;color:${r.neutral ? 'var(--muted)' : (r.sign==='+' ? '#1A6B47':'#B03020')};width:16px;flex-shrink:0;">${r.sign}</span>
       <span style="color:var(--muted);flex:1;">${r.label}</span>
-      <span style="font-family:'Courier New', Courier, monospace;font-weight:500;${r.neutral ? 'color:var(--muted);':''}">${r.val}</span>
+      <span style="font-family: Arial, sans-serif;font-weight:500;${r.neutral ? 'color:var(--muted);':''}">${r.val}</span>
     </div>`).join('');
   }
 
