@@ -277,10 +277,10 @@
 
             /* ── Fix 2: Ingredient 블록 점선 구분 + 배경 ── */
             #tab6 .g4 > div {
-                border: 1px dashed #b8ddc8;
-                border-radius: 10px;
-                padding: 12px 10px;
-                background: #f7fdf9;
+                border: 1px dashed #b8ddc8 !important;
+                border-radius: 10px !important;
+                padding: 12px 10px !important;
+                background: #f7fdf9 !important;
             }
             #tab6 .blk-title {
                 font-size: 12px !important;
@@ -671,9 +671,19 @@
     
   /* ── Lipidol Report (Tab 6) ── */
     /* OFFLINE: Google Fonts @import removed, using system font fallbacks */
-  
-  
-  
+
+  #tab6 {
+    --muted: #586174;
+    --green-mid: #1a9a5a;
+    --green-light: #e3f6ea;
+    --amber: #a85500;
+    --amber-light: #fdf0e0;
+    --red: #b03020;
+    --red-light: #fbe6e2;
+    --r: 10px;
+    --shadow: 0 1px 3px rgba(20,30,50,0.06);
+  }
+
     /* Header */
   #tab6 .hdr { background: var(--text); padding: 18px 36px; display: flex; align-items: center; gap: 14px; position: relative; overflow: hidden; }
   #tab6 .hdr-logo { width: 34px; height: 34px; background: var(--green-mid); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Courier New', Courier, monospace; font-size: 15px; font-weight: 500; color: white; }
@@ -683,7 +693,7 @@
   #tab6 .wrap { max-width: 1080px; margin: 0 auto; padding: 28px 20px 60px; }
   
     /* Section heading */
-  #tab6 .sec-head { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
+  #tab6 .sec-head { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
   #tab6 .sec-head::after { content:''; flex:1; height:1px; background:var(--border); }
   
     /* Card */
@@ -693,23 +703,24 @@
     /* Grid */
   #tab6 .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   #tab6 .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-  #tab6 .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-  
+  #tab6 .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  #tab6 .g4 > div { border: 1px solid var(--border); border-radius: var(--r); padding: 14px 14px 12px; background: var(--bg); }
+
     /* Field */
-  #tab6 .fld { margin-bottom: 10px; }
+  #tab6 .fld { margin-bottom: 12px; }
   #tab6 .fld:last-child { margin-bottom: 0; }
-  #tab6 .fld label { display: block; font-size: 11px; font-weight: 500; color: var(--muted); margin-bottom: 3px; }
+  #tab6 .fld label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
   #tab6 .inp-wrap { position: relative; }
-  #tab6 .inp-wrap input { width: 100%; padding: 7px 38px 7px 10px; border: 1px solid var(--border); border-radius: 7px; font-family: 'Courier New', Courier, monospace; font-size: 13px; color: var(--text); background: var(--bg); transition: border-color 0.15s, box-shadow 0.15s; -moz-appearance: textfield; }
+  #tab6 .inp-wrap input { width: 100%; padding: 9px 40px 9px 11px; border: 1.5px solid var(--border); border-radius: 7px; font-family: 'Courier New', Courier, monospace; font-size: 14px; font-weight: 600; color: var(--text); background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s; -moz-appearance: textfield; }
   #tab6 .inp-wrap input::-webkit-outer-spin-button,
   #tab6 .inp-wrap input::-webkit-inner-spin-button { -webkit-appearance: none; }
   #tab6 .inp-wrap input:focus { outline: none; border-color: var(--green-mid); box-shadow: 0 0 0 3px rgba(39,158,106,0.1); background: white; }
-  #tab6 .inp-wrap .u { position: absolute; right: 9px; top: 50%; transform: translateY(-50%); font-size: 10px; color: var(--muted); pointer-events: none; font-family: 'Courier New', Courier, monospace; }
+  #tab6 .inp-wrap .u { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: 600; color: var(--muted); pointer-events: none; font-family: 'Courier New', Courier, monospace; }
   #tab6 .fld-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
   #tab6 .fld-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-  
+
     /* Ingredient block title */
-  #tab6 .blk-title { font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  #tab6 .blk-title { font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
   
     /* Scenario cards */
   #tab6 .sc-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 4px; }
@@ -2046,12 +2057,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div>
         <div class="blk-title">Full Fat Soya</div>
-        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="ffs_price" value="0.60" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
+        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="ffs_price" value="0.55" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
       </div>
 
       <div>
         <div class="blk-title">Oil Ingredient</div>
-        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="syo_price" value="1.10" oninput="lr_autoCalc()"><span class="u">/L</span></div></div>
+        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="syo_price" value="1.40" oninput="lr_autoCalc()"><span class="u">/L</span></div></div>
       </div>
 
       <div>
@@ -2061,7 +2072,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       <div>
         <div class="blk-title">Lipidol</div>
-        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="lip_price" value="8.00" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
+        <div class="fld"><label>Unit Price</label><div class="inp-wrap"><input type="text" id="lip_price" value="7.00" oninput="lr_autoCalc()"><span class="u">/kg</span></div></div>
         <div style="margin-top:16px; padding-top:14px; border-top:1px solid var(--border)">
           <div class="blk-title">General</div>
           <div class="fld"><label>Currency</label><input type="text" id="lr_currency" value="USD" oninput="lr_autoCalc()" style="width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:7px;font-family:'Outfit',sans-serif;font-size:13px;background:var(--bg);"></div>
