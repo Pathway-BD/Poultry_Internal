@@ -1140,6 +1140,29 @@
     .guide-share-chip .gsc-btn:active { background: #edf3ff; }
 }
 
+/* ── Species switch toggle (ProBe-Bac WE tab) ── */
+.species-switch {
+    display: inline-flex; align-items: center; gap: 5px;
+    cursor: pointer; user-select: none; padding: 4px 8px;
+    border-radius: 20px; border: 1.5px solid #ddd; background: #f8f8f8;
+    transition: border-color 0.2s;
+}
+.species-switch:hover { border-color: #aaa; }
+.species-switch .species-emoji { font-size: 1.3em; opacity: 0.35; transition: opacity 0.15s; line-height: 1; }
+.species-switch .species-knob {
+    width: 30px; height: 16px; border-radius: 8px; background: #e65100;
+    position: relative; transition: background 0.2s;
+}
+.species-switch .species-knob::after {
+    content: ''; position: absolute; top: 2px; left: 2px;
+    width: 12px; height: 12px; border-radius: 50%; background: #fff;
+    transition: transform 0.2s;
+}
+.species-switch.swine .species-knob { background: #6a1b9a; }
+.species-switch.swine .species-knob::after { transform: translateX(14px); }
+.species-switch:not(.swine) .emoji-poultry { opacity: 1; }
+.species-switch.swine .emoji-swine { opacity: 1; }
+
 </style>
 </head>
 <body>
@@ -1568,7 +1591,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         <div class="title-row">
             <h2>ProBe-Bac WE Application Plan</h2>
-            <div class="method-inline">
+            <div class="method-inline" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                <div class="species-switch" id="speciesSwitch" onclick="toggleSpecies()" role="button" tabindex="0" aria-label="Toggle livestock type (Poultry / Swine)" title="Click to switch between Poultry and Swine">
+                    <span class="species-emoji emoji-poultry">🐔</span>
+                    <span class="species-knob"></span>
+                    <span class="species-emoji emoji-swine">🐖</span>
+                </div>
                 <label for="pbMethod">Application Method</label>
                 <select id="pbMethod" onchange="calcPB()">
                     <option value="tank" selected>Water Tank</option>
@@ -1741,7 +1769,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                         <div class="dg-settings-group">
                             <div class="dg-settings-group-title">Farm Information</div>
                             <div class="dg-form-grid">
-                                <div class="field-box">
+                                <div class="field-box" id="dgBreedField">
                                     <label>Breed</label>
                                     <select id="dgBreed" onchange="dgSync('dgBreed','pbBreed'); calcPB()">
                                         <option value="cobb500">Cobb 500</option>
@@ -1749,11 +1777,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                                     </select>
                                 </div>
                                 <div class="field-box">
-                                    <label>Marketed Days</label>
+                                    <label id="dgDaysLabel">Marketed Days</label>
                                     <input type="text" inputmode="decimal" id="dgDays" value="35" oninput="formatNum(this); dgSync('dgDays','pbDays'); calcPB()">
                                 </div>
                                 <div class="field-box">
-                                    <label>No. of Birds</label>
+                                    <label id="dgBirdsLabel">No. of Birds</label>
                                     <input type="text" inputmode="decimal" id="dgBirds" value="20,000" oninput="formatNum(this); dgSync('dgBirds','pbBirds'); calcPB()">
                                 </div>
                                 <div class="field-box">
@@ -1763,15 +1791,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             </div>
                         </div>
 
-                        <div class="dg-settings-group">
+                        <div class="dg-settings-group" id="dgPeriodGroup">
                             <div class="dg-settings-group-title">Application Period</div>
                             <div class="dg-form-grid">
-                                <div class="field-box">
+                                <div class="field-box" id="dgStartDayField">
                                     <label>Start Day</label>
                                     <input type="text" inputmode="decimal" id="dgStartDay" value="1" oninput="formatNum(this); dgSync('dgStartDay','pbStartDay'); calcPB()">
                                 </div>
                                 <div class="field-box">
-                                    <label>End Day</label>
+                                    <label id="dgEndDayLabel">End Day</label>
                                     <input type="text" inputmode="decimal" id="dgEndDay" value="8" oninput="formatNum(this); dgSync('dgEndDay','pbEndDay'); calcPB()">
                                 </div>
                             </div>
@@ -1883,23 +1911,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <h4 style="color:#e65100; margin:0; border-bottom:none; padding-bottom:0;">Farm Variables</h4>
                     <button class="fv-close-btn" onclick="closePBAllPanels()">✕</button>
                 </div>
-                <div class="field-box">
+                <div class="field-box" id="pbBreedField">
                     <label>Breed:</label>
                     <select id="pbBreedVis" onchange="document.getElementById('pbBreed').value=this.value; calcPB()">
                         <option value="cobb500">Cobb 500</option>
                         <option value="ross308">Ross 308</option>
                     </select>
                 </div>
-                <div class="field-box"><label>Marketed Days:</label><input type="text" inputmode="decimal" id="pbDaysVis" value="35" oninput="formatNum(this); document.getElementById('pbDays').value=this.value.replace(/,/g,''); calcPB()"></div>
-                <div class="field-box"><label>No. of Birds:</label><input type="text" inputmode="decimal" id="pbBirdsVis" value="20,000" oninput="formatNum(this); document.getElementById('pbBirds').value=this.value.replace(/,/g,''); calcPB()"></div>
+                <div class="field-box"><label id="pbDaysLabel">Marketed Days:</label><input type="text" inputmode="decimal" id="pbDaysVis" value="35" oninput="formatNum(this); document.getElementById('pbDays').value=this.value.replace(/,/g,''); calcPB()"></div>
+                <div class="field-box"><label id="pbBirdsLabel">No. of Birds:</label><input type="text" inputmode="decimal" id="pbBirdsVis" value="20,000" oninput="formatNum(this); document.getElementById('pbBirds').value=this.value.replace(/,/g,''); calcPB()"></div>
                 <div class="field-box"><label>Water:Feed Ratio:</label><input type="text" inputmode="decimal" id="pbWFRatioVis" value="2" oninput="document.getElementById('pbWFRatio').value=this.value; calcPB()"></div>
                 <div id="pbPeriodFields" class="period-fields">
-                    <div class="field-box">
+                    <div class="field-box" id="pbStartDayField">
                         <label>Application Start Day:</label>
                         <input type="text" inputmode="decimal" id="pbStartDayVis" value="1" oninput="formatNum(this); document.getElementById('pbStartDay').value=this.value.replace(/,/g,''); calcPB()">
                     </div>
                     <div class="field-box">
-                        <label>Application End Day:</label>
+                        <label id="pbEndDayLabel">Application End Day:</label>
                         <input type="text" inputmode="decimal" id="pbEndDayVis" value="8" oninput="formatNum(this); document.getElementById('pbEndDay').value=this.value.replace(/,/g,''); calcPB()">
                     </div>
                 </div>
@@ -10279,6 +10307,89 @@ const data = {
     }
 };
 
+const pigletData = [{"day":21,"bw":5.5,"adfi":313.4},{"day":22,"bw":5.74,"adfi":325.6},{"day":23,"bw":5.98,"adfi":338.1},{"day":24,"bw":6.23,"adfi":350.9},{"day":25,"bw":6.49,"adfi":364.0},{"day":26,"bw":6.76,"adfi":377.4},{"day":27,"bw":7.04,"adfi":385.5},{"day":28,"bw":7.32,"adfi":405.3},{"day":29,"bw":7.62,"adfi":419.7},{"day":30,"bw":7.92,"adfi":434.4},{"day":31,"bw":8.22,"adfi":449.4},{"day":32,"bw":8.54,"adfi":464.8},{"day":33,"bw":8.86,"adfi":480.4},{"day":34,"bw":9.2,"adfi":496.4},{"day":35,"bw":9.54,"adfi":512.6},{"day":36,"bw":9.89,"adfi":529.2},{"day":37,"bw":10.25,"adfi":546.0},{"day":38,"bw":10.62,"adfi":563.1},{"day":39,"bw":10.99,"adfi":580.5},{"day":40,"bw":11.38,"adfi":598.2},{"day":41,"bw":11.77,"adfi":616.2},{"day":42,"bw":12.17,"adfi":634.4},{"day":43,"bw":12.59,"adfi":652.8},{"day":44,"bw":13.01,"adfi":671.5},{"day":45,"bw":13.44,"adfi":690.5},{"day":46,"bw":13.87,"adfi":709.7},{"day":47,"bw":14.32,"adfi":729.1},{"day":48,"bw":14.78,"adfi":748.7},{"day":49,"bw":15.24,"adfi":768.5},{"day":50,"bw":15.72,"adfi":788.6},{"day":51,"bw":16.2,"adfi":808.8},{"day":52,"bw":16.69,"adfi":829.2},{"day":53,"bw":17.19,"adfi":849.8},{"day":54,"bw":17.71,"adfi":870.5},{"day":55,"bw":18.22,"adfi":891.4},{"day":56,"bw":18.75,"adfi":912.4},{"day":57,"bw":19.29,"adfi":933.5},{"day":58,"bw":19.84,"adfi":954.8},{"day":59,"bw":20.39,"adfi":976.2},{"day":60,"bw":20.96,"adfi":997.6},{"day":61,"bw":21.53,"adfi":1019.2},{"day":62,"bw":22.11,"adfi":1040.8},{"day":63,"bw":22.7,"adfi":1062.5},{"day":64,"bw":23.3,"adfi":1084.2},{"day":65,"bw":23.91,"adfi":1106.0},{"day":66,"bw":24.53,"adfi":1127.8},{"day":67,"bw":25.15,"adfi":1149.7},{"day":68,"bw":25.78,"adfi":1171.5},{"day":69,"bw":26.43,"adfi":1193.4},{"day":70,"bw":27.08,"adfi":1215.2}];
+const swineData = {};
+pigletData.forEach(r => { swineData[r.day] = { bw: r.bw, adfi: r.adfi }; });
+
+let species = 'poultry'; // 'poultry' | 'swine'
+
+function getFeedIntake(d, breed) {
+    if (species === 'swine') return swineData[d]?.adfi || 0;
+    return data[breed]?.[d]?.dailyIntake || 0;
+}
+
+function applySpeciesDefaults() {
+    const isSwine = species === 'swine';
+    const sw = document.getElementById('speciesSwitch');
+    if (sw) sw.classList.toggle('swine', isSwine);
+
+    // Show/hide breed selects
+    const pbBF = document.getElementById('pbBreedField');
+    const dgBF = document.getElementById('dgBreedField');
+    if (pbBF) pbBF.style.display = isSwine ? 'none' : 'block';
+    if (dgBF) dgBF.style.display = isSwine ? 'none' : 'block';
+
+    // Label changes
+    const pbDL = document.getElementById('pbDaysLabel');
+    const dgDL = document.getElementById('dgDaysLabel');
+    const pbBL = document.getElementById('pbBirdsLabel');
+    const dgBL = document.getElementById('dgBirdsLabel');
+    const pbEDL = document.getElementById('pbEndDayLabel');
+    const dgEDL = document.getElementById('dgEndDayLabel');
+    if (pbDL) pbDL.textContent = isSwine ? 'Weaning Day:' : 'Marketed Days:';
+    if (dgDL) dgDL.textContent = isSwine ? 'Weaning Day' : 'Marketed Days';
+    if (pbBL) pbBL.textContent = isSwine ? 'No. of Piglets:' : 'No. of Birds:';
+    if (dgBL) dgBL.textContent = isSwine ? 'No. of Piglets' : 'No. of Birds';
+    if (pbEDL) pbEDL.textContent = isSwine ? 'End Day:' : 'Application End Day:';
+    if (dgEDL) dgEDL.textContent = isSwine ? 'End Day' : 'End Day';
+
+    // Hide start-day fields for swine (weaning day = start)
+    const pbSDF = document.getElementById('pbStartDayField');
+    const dgSDF = document.getElementById('dgStartDayField');
+    if (pbSDF) pbSDF.style.display = isSwine ? 'none' : 'block';
+    if (dgSDF) dgSDF.style.display = isSwine ? 'none' : 'block';
+
+    // Hide Application Period group in dosatron for swine
+    const dgPG = document.getElementById('dgPeriodGroup');
+    if (dgPG) dgPG.style.display = isSwine ? 'none' : 'block';
+
+    // Force full-period toggle on for swine (no partial period selection)
+    const ptog = document.getElementById('pbDosageViewToggle');
+    if (ptog) ptog.checked = !isSwine ? ptog.checked : true;
+
+    // Set default values for all input fields
+    const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+    if (isSwine) {
+        setVal('pbDaysVis', 21);        setVal('dgDays', 21);
+        setVal('pbBirdsVis', '500');    setVal('dgBirds', '500');
+        setVal('pbStartDayVis', 21);    setVal('dgStartDay', 21);
+        setVal('pbEndDayVis', 70);      setVal('dgEndDay', 70);
+        setVal('pbWFRatioVis', 2.5);    setVal('dgWFRatio', 2.5);
+        setVal('pbPpm', 100);           setVal('dgPpm', 100);
+        setVal('pbTank', '1,000');
+    } else {
+        setVal('pbDaysVis', 35);        setVal('dgDays', 35);
+        setVal('pbBirdsVis', '20,000'); setVal('dgBirds', '20,000');
+        setVal('pbStartDayVis', 1);     setVal('dgStartDay', 1);
+        setVal('pbEndDayVis', 8);       setVal('dgEndDay', 8);
+        setVal('pbWFRatioVis', 2);      setVal('dgWFRatio', 2);
+        setVal('pbPpm', 50);            setVal('dgPpm', 50);
+        setVal('pbTank', '1,000');
+    }
+    // Sync hidden fields
+    setVal('pbDays', document.getElementById('pbDaysVis').value);
+    setVal('pbBirds', document.getElementById('pbBirdsVis').value.replace(/,/g,''));
+    setVal('pbStartDay', document.getElementById('pbStartDayVis').value);
+    setVal('pbEndDay', document.getElementById('pbEndDayVis').value);
+    setVal('pbWFRatio', document.getElementById('pbWFRatioVis').value);
+}
+
+function toggleSpecies() {
+    species = species === 'poultry' ? 'swine' : 'poultry';
+    applySpeciesDefaults();
+    calcPB();
+}
+
 function syncPpm(el) {
     const other = document.getElementById('pbPpm');
     if (other) other.value = el.value;
@@ -10432,6 +10543,8 @@ function calcPB() {
     document.getElementById('pbBreed').value = breed;
 
     const days = isDosatron ? getVal('dgDays', 35) : getVal('pbDaysVis', 35);
+    const minDay = species === 'swine' ? 21 : 1;
+    const maxDay = species === 'swine' ? 70 : Math.min(days, 40);
     const birds = isDosatron ? getVal('dgBirds', 20000) : getVal('pbBirdsVis', 20000);
     const wfRatio = isDosatron ? getVal('dgWFRatio', 2) : getVal('pbWFRatioVis', 2);
     const ppm = isDosatron ? getVal('dgPpm', 50) : getVal('pbPpm', 50);
@@ -10444,12 +10557,16 @@ function calcPB() {
     const operationSharePct = Math.min(Math.max(getVal('dgOpShare', (operationHours / 24) * 100), 0.1), 100);
     const operationShare = (isDosatron && operationMode === 'timed') ? operationSharePct / 100 : 1;
 
-    const startDay = isDosatron
-        ? Math.max(1, Math.round(getVal('dgStartDay', 1)))
-        : Math.max(1, Math.round(getVal('pbStartDayVis', 1)));
-    const endDay = isDosatron
-        ? Math.min(Math.round(getVal('dgEndDay', 8)), days, 40)
-        : Math.min(Math.round(getVal('pbEndDayVis', 8)), days, 40);
+    const startDay = species === 'swine'
+        ? Math.max(minDay, Math.round(days))
+        : (isDosatron
+            ? Math.max(1, Math.round(getVal('dgStartDay', 1)))
+            : Math.max(1, Math.round(getVal('pbStartDayVis', 1))));
+    const endDay = species === 'swine'
+        ? Math.min(Math.round(isDosatron ? getVal('dgEndDay', 70) : getVal('pbEndDayVis', 70)), maxDay)
+        : (isDosatron
+            ? Math.min(Math.round(getVal('dgEndDay', 8)), days, 40)
+            : Math.min(Math.round(getVal('pbEndDayVis', 8)), days, 40));
     const dayRangeInvalid = startDay > endDay;
 
     const pkgName = isDosatron
@@ -10469,6 +10586,12 @@ function calcPB() {
         ? ['dgDays', 'dgBirds', 'dgWFRatio', 'dgPkgGrams', 'dgStartDay', 'dgEndDay', 'dgPpm', 'dgDosatronRate', 'dgStockTank']
         : ['pbDaysVis', 'pbBirdsVis', 'pbWFRatioVis', 'pbPkgGrams', 'pbStartDayVis', 'pbEndDayVis', 'pbTank', 'pbPpm'];
     if (isDosatron && operationMode === 'timed') requiredFields.push('dgOpHours');
+    // For swine, start-day field is hidden (weaning day acts as start); remove from required
+    if (species === 'swine') {
+        const sdField = isDosatron ? 'dgStartDay' : 'pbStartDayVis';
+        const idx = requiredFields.indexOf(sdField);
+        if (idx > -1) requiredFields.splice(idx, 1);
+    }
     const hasEmptyInput = requiredFields.some(isBlank);
     const dosatronRateRaw = getVal('dgDosatronRate', 1);
     const operationHoursRaw = getVal('dgOpHours', 6);
@@ -10482,6 +10605,11 @@ function calcPB() {
     document.getElementById('pbPpmField').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('pbFarmVarsCard').style.display = isDosatron ? 'none' : 'block';
     document.getElementById('dailyPlanLayout').style.gridTemplateColumns = isDosatron ? '1fr' : '3fr 1fr';
+    // For swine: hide start-day period field (weaning day acts as start)
+    const pbPF = document.getElementById('pbPeriodFields');
+    if (pbPF) pbPF.style.display = isDosatron ? 'none' : 'grid';
+    const pbSDF2 = document.getElementById('pbStartDayField');
+    if (pbSDF2) pbSDF2.style.display = (species === 'swine') ? 'none' : 'block';
     document.getElementById('pbThStock').style.display = isDosatron ? '' : 'none';
     document.getElementById('pbThRemain').innerHTML = isDosatron ? 'Stock Tank Remain<br>(L)' : 'Tank Remain<br>(L)';
     document.getElementById('pbThAction').innerHTML = isDosatron ? 'Action Guide<br>(Stock Empty)' : 'Action Guide<br>(When Tank Empty)';
@@ -10511,8 +10639,8 @@ function calcPB() {
 
     /* ── Full-period total (Water Tank: all days; Dosatron: not used in toggle) ── */
     let totalGFull = 0;
-    for (let d = 1; d <= days && d <= 40; d++) {
-        const fi = data[breed][d]?.dailyIntake || 0;
+    for (let d = minDay; d <= maxDay; d++) {
+        const fi = getFeedIntake(d, breed);
         totalGFull += (fi * wfRatio * birds / 1000) * ppm / 1000;
     }
 
@@ -10526,8 +10654,8 @@ function calcPB() {
     let refillDaysAll = [];
     let tankTooSmall = false;
 
-    for (let d = 1; d <= days && d <= 40; d++) {
-        const feedIntakeHead = data[breed][d]?.dailyIntake || 0;
+    for (let d = minDay; d <= maxDay; d++) {
+        const feedIntakeHead = getFeedIntake(d, breed);
         const waterIntakeHeadMl = feedIntakeHead * wfRatio;
         const dailyHouseWaterL = (waterIntakeHeadMl * birds) / 1000;
         if (!isDosatron && dailyHouseWaterL / tankVol > 20) tankTooSmall = true;
@@ -10620,7 +10748,7 @@ function calcPB() {
             ? `${fmtPct(wePerTank / pkgGrams)} ${pkgName}(s)`
             : `${fmt0(wePerTank)}g`;
         if (showFullPeriod) {
-            quickText = `* Full Period Application: <strong style="font-size:1.25em;">Day 1~${Math.min(days, 40)}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE at every tank refill throughout the entire grow-out period.`;
+            quickText = `* Full Period Application: <strong style="font-size:1.25em;">Day ${minDay}~${maxDay}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE at every tank refill throughout the entire grow-out period.`;
         } else {
             quickText = `* Application Period: <strong style="font-size:1.25em;">Day ${startDay}~${endDay}</strong>. Please add <strong style="font-size:1.25em;">${oneTankGuide}</strong> of ProBe-Bac WE when the tank is refilled during the selected period.`;
         }
@@ -10632,7 +10760,7 @@ function calcPB() {
     const titleLabel = document.getElementById('resPbTotalTitle');
     const periodLabel = document.getElementById('resPbPeriodLabel');
     if (titleLabel) titleLabel.innerText = showFullPeriod ? 'Full Period Dosage' : 'Selected Period Dosage';
-    if (periodLabel) periodLabel.innerText = periodInvalid ? '-' : (showFullPeriod ? `Day 1 ~ ${Math.min(days, 40)}` : `Day ${startDay} ~ ${endDay}`);
+    if (periodLabel) periodLabel.innerText = periodInvalid ? '-' : (showFullPeriod ? `Day ${minDay} ~ ${maxDay}` : `Day ${startDay} ~ ${endDay}`);
 
     const totalWeElem = document.getElementById('resPbTotal');
     const totalWeUnit = document.getElementById('resPbUnit');
